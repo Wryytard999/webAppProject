@@ -1,51 +1,54 @@
 @import url(./index.css);
 
-.Logo {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
 .title {
   display: flex;
   align-items: center;
-  gap: 1.875rem;
+  gap: 1rem;
 }
+
 .navBar {
   display: flex;
-  width: 17%;
-  height: 56.9rem;
+  width: fit-content;
+  height: 100vh;
   padding: 2.5rem;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  flex-shrink: 0;
   border-right: 0.125rem solid #fff;
   background: #230d0d;
   backdrop-filter: blur(2rem);
+  font-size: 1rem;
 }
+
 .container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 2.87rem;
+  align-items: start;
+  min-height: 60%;
+  justify-content: space-between;
 }
-button {
+
+.Signout {
   padding: 0.5rem 1rem;
   text-align: center;
   background-color: white;
   font-weight: 700;
-  width: 50%;
 }
-a {
+
+.title a {
   color: #b1b1b1;
+  font-size: 1rem;
 }
+
 .selected {
   color: #f04646;
 }
-h1 {
+
+.conatiner h1 {
   font-weight: 100;
   color: white;
 }
+
 strong {
   font-weight: 900;
 }
