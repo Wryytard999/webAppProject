@@ -1,0 +1,89 @@
+@import url(./index.css);
+
+.mainpage {
+  background-image: url(./assets/backgroundpng.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  color: white;
+}
+
+.homenav {
+  width: 100vw;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(17px);
+  padding-inline: 10%;
+  padding-block: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.homenav button a {
+  color: black;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+.mainheader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: auto;
+  min-height: 80vh;
+}
+
+.content h1 {
+  text-align: center;
+  font-size: 3.5rem;
+  font-weight: 600;
+  max-width: 70%;
+  margin: auto;
+  margin-top: 6rem;
+}
+
+.lighttxt {
+  font-size: 4rem;
+  font-weight: 100 !important;
+}
+
+.fonction {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  width: 70%;
+  margin-inline: auto;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(47px);
+  padding: 4rem 2rem;
+  gap: 1.8rem;
+}
+
+.fonctions {
+  display: flex;
+  justify-content: space-between;
+  gap: 5rem;
+}
+
+.fonction h2 {
+  font-size: 1.49688rem;
+  font-weight: 500;
+}
+
+.fonctions p {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.fonction-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1rem;
+}
