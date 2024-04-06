@@ -1,51 +1,51 @@
 @import url(./index.css);
 
 .Logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
 }
 .title {
-    display: flex;
-    align-items: center;
-    gap: 30px;
+  display: flex;
+  align-items: center;
+  gap: 1.875rem;
 }
 .navBar {
-    display: flex;
-    width: 17%;
-    height: 911px;
-    padding: 40px;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-shrink: 0;
-    border-right: 2px solid #FFF;
-    background: #230D0D;
-    backdrop-filter: blur(32px);
+  display: flex;
+  width: 17%;
+  height: 56.9rem;
+  padding: 2.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  border-right: 0.125rem solid #fff;
+  background: #230d0d;
+  backdrop-filter: blur(2rem);
 }
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2.87rem;
 }
 button {
-    padding: 8px 16px;
-    text-align: center;
-    background-color: white;
-    font-weight: 700;
-    width: 50%;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background-color: white;
+  font-weight: 700;
+  width: 50%;
 }
 a {
-    color: #B1B1B1;
+  color: #b1b1b1;
 }
 .selected {
-    color: #F04646;
+  color: #f04646;
 }
 h1 {
-    font-weight: 100;
-    color: white;
+  font-weight: 100;
+  color: white;
 }
 strong {
-    font-weight: 900;
+  font-weight: 900;
 }
