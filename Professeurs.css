@@ -1,1 +1,35 @@
 @import url(./index.css);
+
+.tableHead {
+    margin: 0;
+    background: var(--mainRed, #411A1A);
+    width: 75%;
+    display: flex;
+    align-items: flex-start;
+    gap: 43%;
+    color: white;
+    text-align: left;
+}
+.leftTitle {
+    padding-left: 1rem;
+}
+.tableRow {
+    margin: 0;
+    width: 97.6%;
+    padding: 1rem;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: flex-start;
+    gap: 45%;
+    text-align: left;
+    border: 0.01rem solid;
+}
+.tableContainer {
+    margin: 0;
+    width: 75%;
+    height: 18rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
