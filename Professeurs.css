@@ -40,12 +40,12 @@
   width: 10px;
   height: 10px;
 }
-
 .tableContainer::-webkit-scrollbar-thumb {
   background: white;
 }
 .containAll {
   display: flex;
+  height: 100vh;
   gap: 10%;
   padding: 0;
   background-color: #170000;
@@ -55,12 +55,15 @@
 }
 .mainPage {
   width: 100%;
-  height: 100vh;
+  padding-left: 18rem;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3.125rem;
   margin-top: 3rem;
+  overflow: scroll;
+  -ms-overflow-style: scrollbar; /* IE and Edge */
+  scrollbar-width: auto; /* Firefox */
 }
 .table {
   display: flex;
@@ -76,18 +79,18 @@
 }
 .formContainer form{
   width: 70%;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
-  row-gap: 10%;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 .inputContainer input {
   background: #D9D9D9;
   width: 100%;
-  height: 100%;
+  height: 3rem;
+  padding: .5rem;
 }
 .inputContainer {
   display: flex;
@@ -108,4 +111,7 @@
   padding: 0.5rem 1rem;
   text-align: center;
   font-weight: 700;
+}
+.buttonContainer {
+  margin-bottom: 2rem;
 }
