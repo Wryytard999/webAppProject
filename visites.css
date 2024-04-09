@@ -7,7 +7,7 @@
   height: 3rem;
   display: flex;
   align-items: flex-start;
-  gap: 44%;
+  gap: 17%;
   color: var(--white);
   text-align: left;
   padding: 1rem;
@@ -15,11 +15,11 @@
 .tableRow {
   margin: 0;
   width: 100%;
-  height: 3rem;
+  height: 3.5rem;
   padding: 1rem;
   background-color: var(--white);
   color: var(--black);
-  gap: 45%;
+  gap: 17%;
   display: flex;
   align-items: flex-start;
   text-align: left;
@@ -41,17 +41,17 @@
   height: 10px;
 }
 .tableContainer::-webkit-scrollbar-thumb {
-  background: white;
+  background: var(--white);
 }
 .containAll {
   display: flex;
   height: 100vh;
   gap: 10%;
   padding: 0;
-  background-color: #170000;
+  background-color: var(--backGr);
 }
 .bigTitle {
-  color: white;
+  color: var(--white);
 }
 .mainPage {
   width: 100%;
@@ -91,6 +91,10 @@
   width: 100%;
   height: 3rem;
   padding: .5rem;
+  appearance: auto;
+}
+.date {
+    appearance: auto;
 }
 .inputContainer {
   display: flex;
@@ -101,13 +105,13 @@
   align-items: flex-start;
   gap: 0.5rem;
   flex-shrink: 0;
-  color: white;
+  color: var(--white);
   font-weight: 200;
   height: 20%;
 }
 .Ajouter {
   background-color: #411A1A;
-  color: white;
+  color: var(--white);
   padding: 0.5rem 1rem;
   text-align: center;
   font-weight: 700;
@@ -118,4 +122,7 @@
 .data {
   width: 20%;
   text-align: left;
+}
+.filler {
+    width: 25rem;
 }

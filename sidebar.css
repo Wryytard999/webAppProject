@@ -17,8 +17,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  border-right: 0.125rem solid #fff;
-  background: #230d0d;
+  border-right: 0.125rem solid var(--white);
+  background: var(--sideBarRed);
   backdrop-filter: blur(2rem);
   font-size: 1rem;
 }
@@ -34,22 +34,22 @@
 .Signout {
   padding: 0.5rem 1rem;
   text-align: center;
-  background-color: white;
+  background-color: var(--white);
   font-weight: 700;
 }
 
 .title a {
-  color: #b1b1b1;
+  color: var(--unselected);
   font-size: 1rem;
 }
 
 .selected {
-  color: #f04646;
+  color: var(--selected);
 }
 
 .conatiner h1 {
   font-weight: 100;
-  color: white;
+  color: var(--white);
 }
 
 strong {
