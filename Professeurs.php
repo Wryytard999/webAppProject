@@ -101,17 +101,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               if($result = mysqli_query($connection, $requet))
               {
                 echo '<script  type="text/javascript"> 
-                      window.onload = function () 
-                      {alert("professeur ' . $prenom . ' ' . $nom . 'est enregistrer par sucees");}
+                      alert("professeur ' . $prenom . ' ' . $nom . 'est enregistrer par sucees");
                       </script>';
+                header('Refresh');
           
               }
           }
           else{
               echo '<script type="text/javascript">
-                    window.onload = function()
-                    {alert("professeur ' . $prenom . ' ' . $nom . ' déjà exist");}
+                    alert("professeur ' . $prenom . ' ' . $nom . ' déjà exist");
                     </script>';
+                  header('Refresh');
           }
 
       }
