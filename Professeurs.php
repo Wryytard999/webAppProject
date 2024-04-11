@@ -69,7 +69,7 @@ include("functions.php");
               <input type="tel" id="tel" name="tel" placeholder="0699999999">
             </div>
             <div class="buttonContainer">
-              <input type="submit" value="Ajouter" class="Ajouter">
+              <input type="submit" value="Ajouter" class="brownButton">
             </div>
           </form>
         </div>

@@ -105,8 +105,8 @@
   font-weight: 200;
   height: 20%;
 }
-.Ajouter {
-  background-color: #411A1A;
+.brownButton {
+  background-color: var(--mainRed);
   color: var(--white);
   padding: 0.5rem 1rem;
   text-align: center;
