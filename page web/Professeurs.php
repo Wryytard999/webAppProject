@@ -1,15 +1,15 @@
 <?php
-include("connection.php");
-include("functions.php");
+include("../php web/connection.php");
+include("../php web/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="Professeurs.css" />
+    <link rel="stylesheet" href="../style web/Professeurs.css" />
     <title>Document</title>
-    <script defer src="LoadSidebar.js"></script>
+    <script defer src="../LoadSidebar.js"></script>
   </head>
   <body>
     <div class="containAll">
@@ -23,8 +23,9 @@ include("functions.php");
           </div>
           <div class="tableContainer">
                 <?php
+                $data =appel_prof($connection);
                 while ($row = mysqli_fetch_assoc($data)) {
-                  echo " <a href=''>";
+                  echo "<a href='affichageProf.php'>";
                     echo "<div class='tableRow'>";
                       echo "<p class='data'>";
                           echo $row["Nom"] . " ". $row["prenom"];
@@ -103,7 +104,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 echo '<script  type="text/javascript"> 
                       alert("professeur ' . $prenom . ' ' . $nom . 'est enregistrer par sucees");
                       </script>';
-                header('Refresh');
+                header('Location:professeurs.php');
           
               }
           }
@@ -111,7 +112,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               echo '<script type="text/javascript">
                     alert("professeur ' . $prenom . ' ' . $nom . ' déjà exist");
                     </script>';
-                  header('Refresh');
+                  header('Location:professeurs.php');
           }
 
       }

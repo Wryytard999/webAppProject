@@ -12,5 +12,3 @@ if(!$connection){
     //die("Erreur de connection a la base de donneé");
 }
 
-$apelle = "SELECT * FROM professeur ORDER BY id desc";
-$data = mysqli_query($connection, $apelle);

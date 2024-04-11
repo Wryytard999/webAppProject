@@ -1,7 +1,7 @@
 @import url(./index.css);
 
 .mainpage {
-  background-image: url(./assets/backgroundpng.png);
+  background-image: url(../assets/backgroundpng.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

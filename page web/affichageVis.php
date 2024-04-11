@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="affichageVis.css" />
+    <link rel="stylesheet" href="../style web/affichageVis.css" />
     <title>Document</title>
-    <script src="LoadSidebar.js"></script>
+    <script src="../LoadSidebar.js"></script>
   </head>
   <body>
     <div class="containAll">

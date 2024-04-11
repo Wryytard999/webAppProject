@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="affichagejury.css" />
+    <link rel="stylesheet" href="../style web/affichagejury.css" />
     <title>Document</title>
-    <script src="LoadSidebar.js"></script>
+    <script src="../LoadSidebar.js"></script>
   </head>
   <body>
     <div class="containAll">
