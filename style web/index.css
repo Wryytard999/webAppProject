@@ -27,3 +27,20 @@
   --selected: #f04646;
   --unselected: #D9D9D9;
 }
+   /* Define styles for the success message div */
+   .success-message {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    padding: 10px;
+    padding-left: 20px; /* Padding */
+    margin-bottom: 1px; /* Margin bottom */
+    text-align: center; /* Center align text */
+}
+  .error-message {
+    background-color: #FFA500; /* Orange background color */
+    color: white; /* White text color */
+    padding: 10px; /* Padding */
+    padding-left: 20px;
+    margin-bottom: 1px; /* Margin bottom */
+    text-align: center; /* Center align text */
+}

@@ -1,3 +1,44 @@
+<?php
+include("../php web/connection.php");
+include("../php web/functions.php");
+
+/*
+if($_SERVER['REQUEST_METHOD'] == 'POST')
+{   
+    if(isset($_POST['submit']))
+    {
+        if(!empty())
+        {
+          
+          if(!cheker_jury(CONNECTION,$email_uni))
+          {
+              $requet="INSERT INTO professeur (CODE_APOGE,PRENOM,NOM,CONTACT,EMAIL_EDU,EMAIL_PERS) 
+              values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
+              $result = mysqli_query(CONNECTION, $requet);
+              
+                if($result)
+                {
+                  echo '<div class="success-message">';
+                  echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
+                  echo '</div>'; 
+                  header('refresh');
+                }
+          }
+          else
+          {
+            
+            echo '<div class="error-message">';
+            echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' existe déjà </p>';
+            echo '</div>';
+            header('refresh');
+          }
+          
+      
+
+    }
+}
+}*/
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,6 +69,13 @@
                 <p class="data">Genie Informatique 2</p>
               </div>
             </a>
+
+
+            <?php 
+            $data = apepel_jury(CONNECTION);
+
+
+            ?>
             <a href="">
               <div class="tableRow">
                 <p class="data">Wadia El bahri</p>
