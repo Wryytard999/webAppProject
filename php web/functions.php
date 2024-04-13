@@ -9,6 +9,17 @@ function cheker_prof($connection,$email)
         return $result && mysqli_num_rows($result) > 0;
     }
 }
+
+function cheker_Fill($connection,$Chef_FIl,$nom)
+{
+    $query = "SELECT * FROM filliere 
+                WHERE LBL_FILLIERE = '$nom'
+                AND ID_RESPONSABLE = '$Chef_FIl'";
+    $result = mysqli_query($connection, $query);
+    return $result && mysqli_num_rows($result) > 0;
+}
+
+
 function appel_prof($connection)
 {
     $query = "SELECT * FROM professeur ORDER BY `ID_PROFESSEUR` DESC";
@@ -21,31 +32,46 @@ function appel_filier($connection)
     $result = mysqli_query($connection, $query);
     return $result;
 }
+
+
 function apepel_jury($connection)
 {
     $query = "SELECT * FROM jury ORDER BY `ID_JURY` DESC";
     $result = mysqli_query($connection, $query);
     return $result;
 }
-function id_nom_prof($connection, $id)
+
+
+function id_nom_respo_prof($connection, $id)
 {
     $apelle = "SELECT NOM , PRENOM 
-                FROM professeur
-                WHERE ID_PROFESSEUR = '$id'";
+                FROM professeur AS pr , responsable AS respo
+                WHERE pr.ID_PROFESSEUR = respo.ID_PROFESSEUR 
+                AND respo.ID_RESPONSABLE= '$id'";
     $result = mysqli_query($connection, $apelle);
     return $result;
 }
+
+
 function prof_list($connection)
 {
-    $query = "SELECT NOM, PRENOM , ID_PROFESSEUR FROM professeur";
+    $query = "SELECT NOM, PRENOM , ID_PROFESSEUR FROM professeur Order by ID_PROFESSEUR desc";
     $result = mysqli_query($connection, $query);
     return $result;
 }
-function cheker_Fill($connection,$Chef_FIl,$nom)
+function id_fillier($connection,$Chef_FIl,$nom)
 {
-    $query = "SELECT * FROM filliere 
-                WHERE LBL_FILLIERE = '$nom'
-                AND ID_PROFESSEUR = '$Chef_FIl'";
+    $query = "SELECT ID_FILLIERE FROM  Filliere WHERE ID_RESPONSABLE = '$Chef_FIl' AND LBL_FILLIERE = '$nom'";
     $result = mysqli_query($connection, $query);
-    return $result && mysqli_num_rows($result) > 0;
+    $data = mysqli_fetch_array($result);
+    return $data['ID_FILLIERE'];
 }
+
+function id_respo($connection,$Chef_FIl)
+{
+    $query = "SELECT ID_RESPONSABLE FROM  responsable WHERE ID_PROFESSEUR = '$Chef_FIl'";
+    $result = mysqli_query($connection, $query);
+    $data = mysqli_fetch_array($result);
+    return $data['ID_RESPONSABLE'];
+}
+

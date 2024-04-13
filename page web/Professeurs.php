@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     if(isset($_POST['submit']))
     {
         if(!empty($_POST['nom']) && !empty($_POST['prenom']) 
-        && !empty( $_POST['emailUni']) )
+        && !empty($_POST['emailUni']))
         {
           $nom = htmlspecialchars($_POST['nom']);
           $prenom = htmlspecialchars($_POST['prenom']);

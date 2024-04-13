@@ -14,12 +14,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $Niv = htmlspecialchars($_POST['Niv']);
           $Chef_FIl = htmlspecialchars($_POST['chefFil']);
           
-          if(!cheker_Fill(CONNECTION , $Chef_FIl , $nom))
+          if(!cheker_Fill(CONNECTION , $Chef_FIl , $nom))//checker si la filliere existe ou non
           {
-              
-              $requet= "INSERT INTO filliere (ID_PROFESSEUR,LBL_FILLIERE,NBR_NIVEAU) values ('$Chef_FIl','$nom','$Niv')";
-              $result = mysqli_query(CONNECTION, $requet);
-              
+              $responsabilite = "INSERT INTO responsable (ID_PROFESSEUR)
+                                  VALUES ('$Chef_FIl')";// passer le prof comme un respo avant de le mettre comme chef de filliere
+              mysqli_query(CONNECTION, $responsabilite);
+
+              $id_respo = id_respo(CONNECTION,$Chef_FIl);
+
+              $requet= "INSERT INTO filliere (ID_RESPONSABLE,LBL_FILLIERE,NBR_NIVEAU) values ('$id_respo','$nom','$Niv')";
+              $result = mysqli_query(CONNECTION, $requet);//remplir tableau de filliere
               if($result)
               {
                 echo '<div class="success-message">';
@@ -27,7 +31,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 echo '</div>'; 
                 header('refresh');
               }
-          }
+              $id = id_fillier(CONNECTION,$id_respo,$nom);
+
+              for($i=$Niv;$i>0;$i-=1)
+              {
+                $lbl = $nom ." ". $i;
+                $requet= "INSERT INTO niveau (ID_FILLIERE,ID_NIVEAU,LBL_NIVEAUX) values ('$id','$i','$lbl')";// inserer niveau basé sur les filliere
+                $result = mysqli_query(CONNECTION, $requet);
+              }
+              $respo ="UPDATE responsable SET ID_FILLIERE = '$id' WHERE ID_RESPONSABLE = '$id_respo'";
+              // ajouter le kle etrangee de filliere au responsable
+              mysqli_query(CONNECTION, $respo);
+          }// bcp execption a gerer
         else
         {
           echo '<div class="error-message">';
@@ -75,7 +90,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                             echo $row["LBL_FILLIERE"];
                         echo "</p>";
                           //  affichage du tableau d'apres BD
-                          $prof_data = id_nom_prof(CONNECTION,$row["ID_PROFESSEUR"]);
+                          $prof_data = id_nom_respo_prof(CONNECTION,$row["ID_RESPONSABLE"]);
                           while($prof = mysqli_fetch_assoc($prof_data))
                           {
                             echo "<p class='data'>";
