@@ -1,3 +1,59 @@
+<?php
+include("../php web/connection.php");
+include("../php web/functions.php");
+if($_SERVER['REQUEST_METHOD'] == 'POST')
+{   
+    if(isset($_POST['submit']))
+    {
+        if(!empty($_POST['Etudiant']) && !empty($_POST['Fil']) 
+        && !empty($_POST['Niveau']) && !empty($_POST['respo']))
+        {
+          $etudiant = $_POST['Etudiant'];
+          $fillier = $_POST['Fil'];
+          $niveau = $_POST['Niveau'];
+          $id_respo = $_POST['respo'];
+          if(!cheker_encadrement(CONNECTION,$id_respo,$etudiant))
+          {
+            $responsabilite = "INSERT INTO responsable (ID_PROFESSEUR)
+                                VALUES ('$id_respo')";
+            // passer le prof comme un respo avant de le mettre comme chef de filliere
+            mysqli_query(CONNECTION, $responsabilite);
+
+              $id_respo = prof_to_id_respo(CONNECTION,$id_respo);
+              $requet="INSERT INTO encadrement (ID_RESPONSABLE,ID_FILLIERE,ID_NIVEAU,ETUDIANT) 
+              values ('$id_respo','$fillier','$nom','$niveau','$etudiant')";
+              $result = mysqli_query(CONNECTION, $requet);
+              
+                if($result)
+                {
+                  echo '<div class="success-message">';
+                  echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
+                  echo '</div>'; 
+                  header('refresh');
+                }
+          }
+          else
+          {
+            
+            echo '<div class="error-message">';
+            echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' existe déjà </p>';
+            echo '</div>';
+            header('refresh');
+          }
+          
+      
+
+    }
+}
+}
+?>
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,54 +84,8 @@
                 <p class="data">Genie Informatique</p>
               </div>
             </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
+          
+
           </div>
         </div>
         <div><h1 class="bigTitle">Ajouter un encadrement:</h1></div>
@@ -83,11 +93,11 @@
           <form action="" method="post">
             <div class="inputContainer">
                 <label for="Destination">Etudiant</label>
-                <input type="text" id="Destination" placeholder="Etudiant">
+                <input type="text" name="Etudiant" id="Destination" placeholder="Etudiant">
             </div>
             <div class="inputContainer">
                 <label for="Fil">Filiere:</label>
-                <select id="Fil" class="dropDown">
+                <select id="Fil" name="Fil" class="dropDown">
                   <option value="Genie Informatique">Genie Informatique</option>
                   <option value="Genie Industriel">Genie Industriel</option>
                   <option value="Finance et Ingenieurie decisionnelle">Finance et Ingenieurie decisionnelle</option>
@@ -95,7 +105,7 @@
             </div>
             <div class="inputContainer">
                 <label for="Niveau">Niveau:</label>
-                <select id="Niveau" class="dropDown">
+                <select id="Niveau" name="Niveau" class="dropDown">
                   <option value="Genie Informatique 1">Genie Informatique 1</option>
                   <option value="Genie Informatique 2">Genie Informatique 2</option>
                   <option value="Genie Informatique 3">Genie Informatique 3</option>
@@ -103,14 +113,14 @@
             </div>
             <div class="inputContainer">
                 <label for="respo">Encadrant:</label>
-                <select id="respo" class="dropDown">
+                <select id="respo" name="respo" class="dropDown">
                   <option value="Hamid akessas">Hamid akessas</option>
                   <option value="Toumnari">Toumnari</option>
                   <option value="Wadia">Wadia</option>
                 </select>
             </div>
             <div class="buttonContainer">
-              <input type="submit" value="Ajouter" class="brownButton">
+              <input type="submit" name='submit' value="Ajouter" class="brownButton">
             </div>
           </form>
         </div>

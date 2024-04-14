@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               {
                 $lbl = $nom ." ". $i;
                 $requet= "INSERT INTO niveau (ID_FILLIERE,ID_NIVEAU,LBL_NIVEAUX) values ('$id','$i','$lbl')";// inserer niveau basé sur les filliere
-                $result = mysqli_query(CONNECTION, $requet);
+                mysqli_query(CONNECTION, $requet);
               }
               $respo ="UPDATE responsable SET ID_FILLIERE = '$id' WHERE ID_RESPONSABLE = '$id_respo'";
               // ajouter le kle etrangee de filliere au responsable

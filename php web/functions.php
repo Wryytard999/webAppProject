@@ -28,6 +28,14 @@ function cheker_jury($connection,$date_start,$id_respo,$type)
     $result = mysqli_query($connection, $query);
     return $result && mysqli_num_rows($result) > 0 ;
 }
+function cheker_encadrement($connection,$id_respo,$etudiant)
+{
+    $query = "SELECT * FROM encadrement 
+    WHERE ID_RESPONSABLE = '$id_respo'
+    AND ETUDIANT = '$etudiant'";
+    $result = mysqli_query($connection, $query);
+return $result && mysqli_num_rows($result) > 0;
+}
 
 
 
@@ -140,5 +148,9 @@ function id_jury($connection,$id_respo,$date_start,$type,$fil)
     $result = mysqli_query($connection, $query);
     $data = mysqli_fetch_array($result);
     return $data['ID_JURY'];
-    
+
+}
+function encadrement_prof($connection,$id_respo,$etudiant)
+{
+
 }

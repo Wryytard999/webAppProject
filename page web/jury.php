@@ -7,9 +7,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
-        if(!empty($_POST('respo'))    &&    !empty($_POST['type']) 
-        && !empty($_POST['participant']) &&    !empty($_POST['Fil'])
-        &&  !empty($_POST['dateStart']) )
+      if(!empty($_POST['respo'])  &&  !empty($_POST['type']) 
+            && !empty($_POST['Fil'])
+            &&  !empty($_POST['dateStart']) )
         {
           $id_respo = $_POST['respo'];
           $type = $_POST['type'];
@@ -20,14 +20,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $date_end = $_POST['dateFin'];
 
               $requet="INSERT INTO jury (ID_FILLIERE,ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
-              values ('$id_respo','$niv','$id_respo','$date_start','$date_end','$type')";
+              values ('$fil','','$id_respo','$date_start','$date_end','$type')";
               $result = mysqli_query(CONNECTION, $requet);
                   
               $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$fil);
-              foreach($id_part as $id_part)
+              if(is_array($id_part) && !empty($id_part))
               {
-                  $query = "INSERT INTO";
+                foreach($id_part as $value)
+              {
+                  $query = "INSERT INTO participer (ID_PROFESSEUR,ID_JURY) value ('$value','$id_jury')";
+                  mysqli_query(CONNECTION, $query);
+
               }
+              }
+              
 
                 if($result)
                 {
