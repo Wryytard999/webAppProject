@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                                   VALUES ('$Chef_FIl')";// passer le prof comme un respo avant de le mettre comme chef de filliere
               mysqli_query(CONNECTION, $responsabilite);
 
-              $id_respo = id_respo(CONNECTION,$Chef_FIl);
+              $id_respo = prof_to_id_respo(CONNECTION,$Chef_FIl);
 
               $requet= "INSERT INTO filliere (ID_RESPONSABLE,LBL_FILLIERE,NBR_NIVEAU) values ('$id_respo','$nom','$Niv')";
               $result = mysqli_query(CONNECTION, $requet);//remplir tableau de filliere
@@ -90,7 +90,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                             echo $row["LBL_FILLIERE"];
                         echo "</p>";
                           //  affichage du tableau d'apres BD
-                          $prof_data = id_nom_respo_prof(CONNECTION,$row["ID_RESPONSABLE"]);
+                          $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
                           while($prof = mysqli_fetch_assoc($prof_data))
                           {
                             echo "<p class='data'>";

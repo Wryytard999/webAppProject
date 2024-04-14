@@ -6,18 +6,29 @@ include("../php web/functions.php");
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
-    {/*
-        if(!empty($_POST('Fil'))    &&    !empty($_POST['type']) 
-        && !empty($_POST['Niveau']) &&    !empty($_POST['respo'])
-        &&  !empty($_POST) )
+    {
+        if(!empty($_POST('respo'))    &&    !empty($_POST['type']) 
+        && !empty($_POST['participant']) &&    !empty($_POST['Fil'])
+        &&  !empty($_POST['dateStart']) )
         {
-          
-          if(!cheker_jury(CONNECTION))
-          {
-              $requet="INSERT INTO professeur (CODE_APOGE,PRENOM,NOM,CONTACT,EMAIL_EDU,EMAIL_PERS) 
-              values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
+          $id_respo = $_POST['respo'];
+          $type = $_POST['type'];
+          $fil = $_POST['Fil'];
+          $niv = $_POST['Niveau'];
+          $id_part = $_POST['participant'];
+          $date_start = $_POST['dateStart'];
+          $date_end = $_POST['dateFin'];
+
+              $requet="INSERT INTO jury (ID_FILLIERE,ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
+              values ('$id_respo','$niv','$id_respo','$date_start','$date_end','$type')";
               $result = mysqli_query(CONNECTION, $requet);
-              
+                  
+              $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$fil);
+              foreach($id_part as $id_part)
+              {
+                  $query = "INSERT INTO";
+              }
+
                 if($result)
                 {
                   echo '<div class="success-message">';
@@ -25,19 +36,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   echo '</div>'; 
                   header('refresh');
                 }
-          }
-          else
-          {
-            
-            echo '<div class="error-message">';
-            echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' existe déjà </p>';
-            echo '</div>';
-            header('refresh');
-          }
           
-      
+         
 
-    }*/
+    }
 }
 }
 ?>
@@ -63,80 +65,67 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <p class="data">Niveau</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-
-
+          
             <?php 
             $data = apepel_jury(CONNECTION);
-
-
+            if($data)
+            {
+                  while($row = mysqli_fetch_assoc($data))
+                {
+                    printf(
+                            "<a href='affichageJury.php'>
+                            <div class='tableRow'>
+                            <p class='data'>%s %s</p>
+                            <p class='data'>%s</p>
+                            <p class='data'>%s</p>
+                            <p class='data'>%s</p>
+                            </div>
+                            </a>",
+                            $row['PRENOM'],$row['NOM'],
+                            $row['LBL_FILLIERE'],$row['TYPE_DE_JURY']
+                            ,$row['LBL_NIVEAU']);
+                          //  affichage du tableau d'apres BD
+                }
+            }
             ?>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique</p>
-                <p class="data">Concours transfert</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
+
           </div>
         </div>
         <div><h1 class="bigTitle">Ajouter une jury:</h1></div>
         <div class="formContainer">
-          <form action="" method="post">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <div class="inputContainer">
                 <label for="Fil">Filiere:</label>
                 <select id="Fil" name="Fil" class="dropDown">
-                  <option value="Genie Informatique">Genie Informatique</option>
-                  <option value="Genie Industriel">Genie Industriel</option>
-                  <option value="Finance et Ingenieurie decisionnelle">Finance et Ingenieurie decisionnelle</option>
+                  
+                  <?php
+                  $data = filliere_liste(CONNECTION);
+                  while($row = mysqli_fetch_assoc($data))
+                  {
+                   
+                    printf(
+                      "<option value='%d'>%s</option>",
+                      $row['ID_FILLIERE'],$row['LBL_FILLIERE']
+                    );
+                  }
+                 ?>
+                  
                 </select>
             </div>
             <div class="inputContainer">
@@ -151,34 +140,66 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="inputContainer">
                 <label for="Niveau">Niveau:</label>
                 <select id="Niveau" name="Niveau" class="dropDown">
-                  <option value="Genie Informatique 1">Genie Informatique 1</option>
-                  <option value="Genie Informatique 2">Genie Informatique 2</option>
-                  <option value="Genie Informatique 3">Genie Informatique 3</option>
+                
+                <?php
+                  $data = niveau_liste(CONNECTION,$_POST['FIL']);
+                  while($row = mysqli_fetch_assoc($data))
+                  {
+                    printf(
+                      "<option value='%d'> %s </option>",
+                      $row['ID_NIVEAUX'],$row['LBL_NIVEAUX']
+                    );
+                  }
+                  ?>
+
                 </select>
             </div>
             <div class="inputContainer">
                 <label for="respo">Responsable:</label>
                 <select id="respo" name="respo" class="dropDown">
-                  <option value="Hamid akessas">Hamid akessas</option>
-                  <option value="Toumnari">Toumnari</option>
-                  <option value="Wadia">Wadia</option>
-                </select>
+                
+                
+                <?php //liste des prof
+                  $data = prof_list(CONNECTION);
+                  while ($row = mysqli_fetch_assoc($data)) {
+                    printf(
+                      "<option value='%d'>%s %s</option>",
+                      htmlspecialchars($row['ID_PROFESSEUR'], ENT_QUOTES),
+                      htmlspecialchars($row['PRENOM'], ENT_QUOTES),
+                      htmlspecialchars($row['NOM'], ENT_QUOTES)
+                  );  
+                    //echo "<option value='{$row['ID_PROFESSEUR']}'>{$row['PRENOM']} {$row['NOM']}</option>";
+                  }
+                 ?>
+
+                
+            </select>
             </div>
             <div class="inputContainer">
                 <label for="participant">Participants:</label>
                 <select id="participant" name="participant[]" class="dropDown" multiple>
-                  <option value="Hamid akessas">Hamid akessas</option>
-                  <option value="Toumnari">Toumnari</option>
-                  <option value="Wadia">Wadia</option>
+                <?php //liste des prof
+                  $data = prof_list(CONNECTION);
+                  while ($row = mysqli_fetch_assoc($data)) {
+                    printf(
+                      "<option value='%d'>%s %s</option>",
+                      htmlspecialchars($row['ID_PROFESSEUR'], ENT_QUOTES),
+                      htmlspecialchars($row['PRENOM'], ENT_QUOTES),
+                      htmlspecialchars($row['NOM'], ENT_QUOTES)
+                  );  
+                    //echo "<option value='{$row['ID_PROFESSEUR']}'>{$row['PRENOM']} {$row['NOM']}</option>";
+                  }
+                 ?>
+
                 </select>
             </div>
             <div class="inputContainer">
                 <label for="dateStart">Date debut:</label>
-                <input type="datetime" name="dateStart" class="date" id="dateStart">
+                <input type="date" name="dateStart" class="date" id="dateStart">
             </div>
             <div class="inputContainer">
                 <label for="dateFin">Date fin:</label>
-                <input type="datetime" name="dateFin" class="date" id="dateFin">
+                <input type="date" name="dateFin" class="date" id="dateFin">
             </div>
             <div class="filler"></div>
             <div class="buttonContainer">
