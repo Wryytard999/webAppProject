@@ -2,15 +2,17 @@
 include("../php web/connection.php");
 include("../php web/functions.php");
 
-/*
+
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
-    {
-        if(!empty())
+    {/*
+        if(!empty($_POST('Fil'))    &&    !empty($_POST['type']) 
+        && !empty($_POST['Niveau']) &&    !empty($_POST['respo'])
+        &&  !empty($_POST) )
         {
           
-          if(!cheker_jury(CONNECTION,$email_uni))
+          if(!cheker_jury(CONNECTION))
           {
               $requet="INSERT INTO professeur (CODE_APOGE,PRENOM,NOM,CONTACT,EMAIL_EDU,EMAIL_PERS) 
               values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
@@ -35,9 +37,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           
       
 
-    }
+    }*/
 }
-}*/
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +133,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           <form action="" method="post">
             <div class="inputContainer">
                 <label for="Fil">Filiere:</label>
-                <select id="Fil" class="dropDown">
+                <select id="Fil" name="Fil" class="dropDown">
                   <option value="Genie Informatique">Genie Informatique</option>
                   <option value="Genie Industriel">Genie Industriel</option>
                   <option value="Finance et Ingenieurie decisionnelle">Finance et Ingenieurie decisionnelle</option>
@@ -139,7 +141,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <div class="inputContainer">
               <label for="type">Type:</label>
-              <select id="type" class="dropDown">
+              <select id="type" name="type" class="dropDown">
                 <option value="recrutement">recrutement</option>
                 <option value="soutenance">soutenance</option>
                 <option value="concours passerelles">concours passerelles</option>
@@ -148,7 +150,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <div class="inputContainer">
                 <label for="Niveau">Niveau:</label>
-                <select id="Niveau" class="dropDown">
+                <select id="Niveau" name="Niveau" class="dropDown">
                   <option value="Genie Informatique 1">Genie Informatique 1</option>
                   <option value="Genie Informatique 2">Genie Informatique 2</option>
                   <option value="Genie Informatique 3">Genie Informatique 3</option>
@@ -156,7 +158,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <div class="inputContainer">
                 <label for="respo">Responsable:</label>
-                <select id="respo" class="dropDown">
+                <select id="respo" name="respo" class="dropDown">
                   <option value="Hamid akessas">Hamid akessas</option>
                   <option value="Toumnari">Toumnari</option>
                   <option value="Wadia">Wadia</option>
@@ -164,7 +166,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <div class="inputContainer">
                 <label for="participant">Participants:</label>
-                <select id="participant" class="dropDown" multiple>
+                <select id="participant" name="participant[]" class="dropDown" multiple>
                   <option value="Hamid akessas">Hamid akessas</option>
                   <option value="Toumnari">Toumnari</option>
                   <option value="Wadia">Wadia</option>
@@ -172,15 +174,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <div class="inputContainer">
                 <label for="dateStart">Date debut:</label>
-                <input type="datetime" class="date" id="dateStart">
+                <input type="datetime" name="dateStart" class="date" id="dateStart">
             </div>
             <div class="inputContainer">
                 <label for="dateFin">Date fin:</label>
-                <input type="datetime" class="date" id="dateFin">
+                <input type="datetime" name="dateFin" class="date" id="dateFin">
             </div>
             <div class="filler"></div>
             <div class="buttonContainer">
-              <input type="submit" value="Ajouter" class="brownButton">
+              <input type="submit" name="submit" value="Ajouter" class="brownButton">
             </div>
           </form>
         </div>
