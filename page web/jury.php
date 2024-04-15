@@ -19,8 +19,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $date_start = $_POST['dateStart'];
           $date_end = $_POST['dateFin'];
 
-              $requet="INSERT INTO jury (ID_FILLIERE,ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
-              values ('$fil','','$id_respo','$date_start','$date_end','$type')";
+          $responsabilite = "INSERT INTO responsable (ID_PROFESSEUR)
+          VALUES ('$id_respo')";// passer le prof comme un respo avant de le mettre comme chef de filliere
+            mysqli_query(CONNECTION, $responsabilite);
+
+            $id_respo = prof_to_id_respo(CONNECTION,$id_respo);
+            
+            $requet="INSERT INTO jury (ID_FILLIERE,ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
+              values ('$fil','$niv','$id_respo','$date_start','$date_end','$type')";
               $result = mysqli_query(CONNECTION, $requet);
                   
               $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$fil);

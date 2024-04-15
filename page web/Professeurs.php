@@ -1,12 +1,17 @@
 <?php
+
 include("../php web/connection.php");
 include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
+
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
         if(!empty($_POST['nom']) && !empty($_POST['prenom']) 
-        && !empty($_POST['emailUni']))
+        && !empty($_POST['codeAPOGEE']))
         {
           $nom = htmlspecialchars($_POST['nom']);
           $prenom = htmlspecialchars($_POST['prenom']);
@@ -14,33 +19,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $email_sec = htmlspecialchars($_POST['emailSec']);
           $code_APOGEE = htmlspecialchars($_POST['codeAPOGEE']);
           $tel = htmlspecialchars($_POST['tel']);
+
           if(!cheker_prof(CONNECTION,$email_uni))
           {
               $requet="INSERT INTO professeur (CODE_APOGE,PRENOM,NOM,CONTACT,EMAIL_EDU,EMAIL_PERS) 
-              values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
+                        values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
               $result = mysqli_query(CONNECTION, $requet);
               
-                if($result)
-                {
-                  echo '<div class="success-message">';
-                  echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
-                  echo '</div>'; 
-                  header('refresh');
-                }
+              if($result)
+              {
+                printf("<div class='success-message'>
+                          <p> Le Prof  %s %s  est ajoute par succes </p>
+                      </div>"
+                      ,htmlspecialchars($nom, ENT_QUOTES),htmlspecialchars($prenom, ENT_QUOTES));
+                header('refresh');
+              }
           }
           else
           {
-            
-            echo '<div class="error-message">';
-            echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' existe déjà </p>';
-            echo '</div>';
+            printf("<div class='error-message'>
+                      <p> Le Prof  %s %s  existe déjà </p>
+                    </div>"
+                    , htmlspecialchars($nom, ENT_QUOTES),htmlspecialchars($prenom, ENT_QUOTES));
             header('refresh');
           }
-          
-      
-
-    }
-}
+        }
+      }
 }
 ?>
 
@@ -67,22 +71,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   <div class="tableContainer">
                       <?php
                           $data =appel_prof(CONNECTION);
-                          while ($row = mysqli_fetch_assoc($data)) 
+                          while ($row = mysqli_fetch_assoc($data)) //  affichage du tableau d'apres BD
                           {
-                            echo "<a href='affichageProf.php'>";
-                              echo "<div class='tableRow'>";
-                                echo "<p class='data'>";
-                                    echo $row["NOM"] . " ". $row["PRENOM"];
-                                      echo "</p>";
-                                          //  affichage du tableau d'apres BD
-                                      echo "<p class='data'>";
-                                    echo $row["EMAIL_EDU"];
-                                echo "</p>";
-                              echo "</div>";
-                            echo "</a>";
+                            printf("<a href='affichageProf.php'>
+                                      <div class='tableRow'>
+                                        <p class='data'>%s %s</p>
+                                        <p class='data'>%s</p>
+                                      </div>
+                                    </a>"
+                                    ,$row["NOM"],$row["PRENOM"],$row["EMAIL_EDU"]);
                           }
                           
-                      ?>
+                        ?>
                   </div>
                 </div>
                 <div><h1 class="bigTitle">Ajouter un professeur:</h1></div>

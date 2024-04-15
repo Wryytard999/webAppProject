@@ -47,13 +47,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 }
 ?>
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -76,15 +69,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <p class="data">Filiere</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">Genie Informatique</p>
-              </div>
-            </a>
-          
+            
+          <?php
+          $data = appel_encadrement(CONNECTION);
+          while($row = mysqli_fetch_assoc($data))
+          {
+            printf("<a href='affichageEnca.php'>
+                      <div class='tableRow'>
+                        <p class='data'>%s %s</p>
+                        <p class='data'>%s</p>
+                        <p class='data'>%s</p>
+                        <p class='data'>%s</p>
+                      </div>
+                    </a>",
+            );
+          }
+          ?>
 
           </div>
         </div>
@@ -106,17 +106,33 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="inputContainer">
                 <label for="Niveau">Niveau:</label>
                 <select id="Niveau" name="Niveau" class="dropDown">
-                  <option value="Genie Informatique 1">Genie Informatique 1</option>
-                  <option value="Genie Informatique 2">Genie Informatique 2</option>
-                  <option value="Genie Informatique 3">Genie Informatique 3</option>
+                <?php
+                  $data = niveau_liste(CONNECTION,$_POST['FIL']);
+                  while($row = mysqli_fetch_assoc($data))
+                  {
+                    printf(
+                      "<option value='%d'> %s </option>",
+                      $row['ID_NIVEAUX'],$row['LBL_NIVEAUX']
+                    );
+                  }
+                  ?>
                 </select>
             </div>
             <div class="inputContainer">
                 <label for="respo">Encadrant:</label>
                 <select id="respo" name="respo" class="dropDown">
-                  <option value="Hamid akessas">Hamid akessas</option>
-                  <option value="Toumnari">Toumnari</option>
-                  <option value="Wadia">Wadia</option>
+                <?php //liste des prof
+                  $data = prof_list(CONNECTION);
+                  while ($row = mysqli_fetch_assoc($data)) {
+                    printf(
+                      "<option value='%d'>%s %s</option>",
+                      htmlspecialchars($row['ID_PROFESSEUR'], ENT_QUOTES),
+                      htmlspecialchars($row['PRENOM'], ENT_QUOTES),
+                      htmlspecialchars($row['NOM'], ENT_QUOTES)
+                  );  
+                    //echo "<option value='{$row['ID_PROFESSEUR']}'>{$row['PRENOM']} {$row['NOM']}</option>";
+                  }
+                 ?>
                 </select>
             </div>
             <div class="buttonContainer">
