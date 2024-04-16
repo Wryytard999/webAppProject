@@ -78,6 +78,12 @@ function idNivToNiv($connection,$id_niv)
     $result = mysqli_query($connection, $query);
     return $result;
 }
+function idProfToProf($connection,$id_prof)
+{
+    $querry = "SELECT * FROM professeur WHERE ID_PROFESSEUR = '$id_prof'";
+    $result = mysqli_query($connection, $querry);
+    return $result;
+}
 function encadrement_prof($connection,$id_respo,$etudiant)
 {
 

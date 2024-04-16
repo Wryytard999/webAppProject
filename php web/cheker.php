@@ -29,11 +29,12 @@ function cheker_jury($connection,$date_start,$id_respo,$type)
     return $result && mysqli_num_rows($result) > 0 ;
 }
 
-function cheker_encadrement($connection,$id_respo,$etudiant)
+function cheker_encadrement($connection,$id_respo,$etudiant,$niveau)
 {
     $query = "SELECT * FROM encadrement 
-    WHERE ID_RESPONSABLE = '$id_respo'
-    AND ETUDIANT = '$etudiant'";
+            WHERE ID_PROFESSEUR = '$id_respo'
+            AND ETUDIANT = '$etudiant'
+            AND ID_NIVEAU = '$niveau'";
     $result = mysqli_query($connection, $query);
 return $result && mysqli_num_rows($result) > 0;
 }

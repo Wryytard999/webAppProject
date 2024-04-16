@@ -5,51 +5,41 @@ include("../php web/appels.php");
 include("../php web/cheker.php");
 include("../php web/listes.php");
 
-
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
-        if(!empty($_POST['Etudiant']) && !empty($_POST['Fil']) 
-        && !empty($_POST['Niveau']) && !empty($_POST['respo']))
+        if(!empty($_POST['Etudiant']) && !empty($_POST['Fil']) && !empty($_POST["Niveau"]) && !empty($_POST['respo']))
         {
           $etudiant = $_POST['Etudiant'];
           $fillier = $_POST['Fil'];
           $niveau = $_POST['Niveau'];
-          $id_respo = $_POST['respo'];
-          if(!cheker_encadrement(CONNECTION,$id_respo,$etudiant))
-          {
-            $responsabilite = "INSERT INTO responsable (ID_PROFESSEUR)
-                                VALUES ('$id_respo')";
-            // passer le prof comme un respo avant de le mettre comme chef de filliere
-            mysqli_query(CONNECTION, $responsabilite);
+          $id_prof = $_POST['respo'];
+          $date = $_POST['date'];
 
-              $id_respo = idProfToIdRespo(CONNECTION,$id_respo);
-              $requet="INSERT INTO encadrement (ID_RESPONSABLE,ID_FILLIERE,ID_NIVEAU,ETUDIANT) 
-              values ('$id_respo','$fillier','$nom','$niveau','$etudiant')";
+          if(!cheker_encadrement(CONNECTION,$id_prof,$etudiant,$niveau))
+          {
+              $requet="INSERT INTO `encadrement` (`ID_PROFESSEUR`, `ID_NIVEAU`, `ETUDIANT`, `DATE`) 
+                         values ('$id_prof','$niveau','$etudiant','$date')";
               $result = mysqli_query(CONNECTION, $requet);
               
-                if($result)
-                {
-                  echo '<div class="success-message">';
-                  echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
-                  echo '</div>'; 
-                  header('refresh');
-                }
+              if($result)
+              {
+                printf("<div class='success-message'>
+                          <p> Encadrement enregistré avec succès</p>
+                       </div>");
+                header('refresh');
+              }
           }
           else
           {
-            
-            echo '<div class="error-message">';
-            echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' existe déjà </p>';
-            echo '</div>';
+            printf("<div class='error-message'>
+                      <p> Encadrement existe déjà </p>
+                    </div>");
             header('refresh');
           }
-          
-      
-
+        }
     }
-}
 }
 ?>
 <!DOCTYPE html>
@@ -79,15 +69,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $data = appel_encadrement(CONNECTION);
           while($row = mysqli_fetch_assoc($data))
           {
-            printf("<a href='affichageEnca.php'>
-                      <div class='tableRow'>
-                        <p class='data'>%s %s</p>
-                        <p class='data'>%s</p>
-                        <p class='data'>%s</p>
-                        <p class='data'>%s</p>
-                      </div>
-                    </a>",
-            );
+            printf("    <a href='affichageEnca.php'>
+                          <div class='tableRow'>");
+            $prof = idProfToProf(CONNECTION,$row['ID_PROFESSEUR']);
+            while($profData = mysqli_fetch_assoc($prof))
+            {
+              printf("      <p class='data'>%s %s</p>",
+              $profData['PRENOM'],$profData['NOM']);
+            }              
+            printf("        <p class='data'>%s</p>",
+            $row["ETUDIANT"]);
+            $niv = idNivToNiv(CONNECTION,$row["ID_NIVEAU"]);
+            while($nivData = mysqli_fetch_assoc($niv))
+            {
+              printf("      <p class='data'>%s</p>",
+              $nivData['LBL_NIVEAUX']);
+            }
+            $fil = idNivToFill(CONNECTION,$row['ID_NIVEAU']);
+            while($filData = mysqli_fetch_assoc($fil))
+            {
+              printf("      <p class='data'>%s</p>
+                          </div>
+                        </a>",
+              $filData['LBL_FILLIERE']);
+            }
           }
           ?>
 
@@ -95,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         </div>
         <div><h1 class="bigTitle">Ajouter un encadrement:</h1></div>
         <div class="formContainer">
-          <form action="" method="post">
+          <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
             <div class="inputContainer">
                 <label for="Destination">Etudiant</label>
                 <input type="text" name="Etudiant" id="Destination" placeholder="Etudiant">
@@ -103,20 +108,26 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="inputContainer">
                 <label for="Fil">Filiere:</label>
                 <select id="Fil" name="Fil" class="dropDown">
-                  <option value="Genie Informatique">Genie Informatique</option>
-                  <option value="Genie Industriel">Genie Industriel</option>
-                  <option value="Finance et Ingenieurie decisionnelle">Finance et Ingenieurie decisionnelle</option>
+                <?php
+                  $data = filliere_liste(CONNECTION);
+                  while($row = mysqli_fetch_assoc($data))
+                  {
+                    printf(
+                      "<option value='%d'>%s</option>",
+                      $row['ID_FILLIERE'],$row['LBL_FILLIERE']
+                    );
+                  }
+                 ?>
                 </select>
             </div>
             <div class="inputContainer">
                 <label for="Niveau">Niveau:</label>
                 <select id="Niveau" name="Niveau" class="dropDown">
                 <?php
-                  $data = niveau_liste(CONNECTION,$_POST['FIL']);
+                  $data = niveau_liste(CONNECTION);
                   while($row = mysqli_fetch_assoc($data))
                   {
-                    printf(
-                      "<option value='%d'> %s </option>",
+                    printf("<option value='%d'> %s </option>",
                       $row['ID_NIVEAUX'],$row['LBL_NIVEAUX']
                     );
                   }
@@ -126,7 +137,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="inputContainer">
                 <label for="respo">Encadrant:</label>
                 <select id="respo" name="respo" class="dropDown">
-                <?php //liste des prof
+                <?php
                   $data = prof_list(CONNECTION);
                   while ($row = mysqli_fetch_assoc($data)) {
                     printf(
@@ -135,11 +146,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                       htmlspecialchars($row['PRENOM'], ENT_QUOTES),
                       htmlspecialchars($row['NOM'], ENT_QUOTES)
                   );  
-                    //echo "<option value='{$row['ID_PROFESSEUR']}'>{$row['PRENOM']} {$row['NOM']}</option>";
                   }
                  ?>
                 </select>
+                
             </div>
+            <div class="inputContainer">
+                <label for="dateStart">Date:</label>
+                <input type="date" name="date" class="date" id="dateStart">
+            </div>
+            <div class="inputContainer"></div>
             <div class="buttonContainer">
               <input type="submit" name='submit' value="Ajouter" class="brownButton">
             </div>
