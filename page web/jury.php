@@ -1,6 +1,9 @@
 <?php
 include("../php web/connection.php");
 include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -8,51 +11,46 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     if(isset($_POST['submit']))
     {
       if(!empty($_POST['respo'])  &&  !empty($_POST['type']) 
-            && !empty($_POST['Fil'])
+            && !empty($_POST['Fil'] && !empty($_POST["Niveau"]))
             &&  !empty($_POST['dateStart']) )
         {
-          $id_respo = $_POST['respo'];
-          $type = $_POST['type'];
-          $fil = $_POST['Fil'];
-          $niv = $_POST['Niveau'];
+          $id_respo = htmlspecialchars($_POST['respo']);
+          $type = htmlspecialchars($_POST['type']);
+          $fil = htmlspecialchars($_POST['Fil']);
+          $niv = htmlspecialchars($_POST['Niveau']);
           $id_part = $_POST['participant'];
-          $date_start = $_POST['dateStart'];
-          $date_end = $_POST['dateFin'];
+          $date_start = htmlspecialchars($_POST['dateStart']);
+          $date_end = htmlspecialchars($_POST['dateFin']);
 
-          $responsabilite = "INSERT INTO responsable (ID_PROFESSEUR)
-          VALUES ('$id_respo')";// passer le prof comme un respo avant de le mettre comme chef de filliere
-            mysqli_query(CONNECTION, $responsabilite);
-
-            $id_respo = prof_to_id_respo(CONNECTION,$id_respo);
+          $responsabilite = profToRespo(CONNECTION,$id_respo,'jury');// passer le prof comme un respo d'un jury avant de le mettre comme chef de filliere
+          $id_respo = idProfToIdRespo(CONNECTION,$id_respo);
             
-            $requet="INSERT INTO jury (ID_FILLIERE,ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
-              values ('$fil','$niv','$id_respo','$date_start','$date_end','$type')";
-              $result = mysqli_query(CONNECTION, $requet);
-                  
-              $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$fil);
-              if(is_array($id_part) && !empty($id_part))
-              {
-                foreach($id_part as $value)
-              {
-                  $query = "INSERT INTO participer (ID_PROFESSEUR,ID_JURY) value ('$value','$id_jury')";
-                  mysqli_query(CONNECTION, $query);
-
-              }
-              }
+          $requet="INSERT INTO jury (ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
+                    values ('$niv','$id_respo','$date_start','$date_end','$type')";
+          $result = mysqli_query(CONNECTION, $requet);
               
+          $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$niv);
 
-                if($result)
-                {
-                  echo '<div class="success-message">';
-                  echo '<p>Le Prof ' . htmlspecialchars($nom, ENT_QUOTES) ." ".htmlspecialchars($prenom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
-                  echo '</div>'; 
-                  header('refresh');
-                }
+          if(is_array($id_part) && !empty($id_part))
+          {
+              foreach($id_part as $value)
+            {
+                $query = "INSERT INTO participer (ID_PROFESSEUR,ID_JURY) value ('$value','$id_jury')";
+                mysqli_query(CONNECTION, $query);
+            }
+          }
           
-         
 
-    }
-}
+            if($result)
+            {
+              printf("<div class='success-message'>
+                        <p> Le Jury  commancera de %s à %s </p>
+                      </div>"
+                      ,htmlspecialchars($date_start, ENT_QUOTES),htmlspecialchars($date_end, ENT_QUOTES));
+              header('refresh'); 
+            }
+       }
+   }
 }
 ?>
 <!DOCTYPE html>
@@ -84,43 +82,45 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             {
                   while($row = mysqli_fetch_assoc($data))
                 {
-                    printf(
-                            "<a href='affichageJury.php'>
-                            <div class='tableRow'>
-                            <p class='data'>%s %s</p>
-                            <p class='data'>%s</p>
-                            <p class='data'>%s</p>
-                            <p class='data'>%s</p>
-                            </div>
-                            </a>",
-                            $row['PRENOM'],$row['NOM'],
-                            $row['LBL_FILLIERE'],$row['TYPE_DE_JURY']
-                            ,$row['LBL_NIVEAU']);
-                          //  affichage du tableau d'apres BD
+                  printf("      <a href='affichageJury.php'>
+                                  <div class='tableRow'>");
+                  
+                  $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
+                  while($prof = mysqli_fetch_assoc($prof_data))
+                      {
+                  printf("          <p class='data'> %s %s </p>"
+                    ,$prof["PRENOM"],$prof["NOM"]);
+                      }
+                  $fill_data = idNivToFill(CONNECTION,$row['ID_NIVEAU']);
+                  while($fill = mysqli_fetch_assoc($fill_data))
+                  {
+                    printf("       <p class='data'>%s</p>",$fill['LBL_FILLIERE']);
+                  }
+                  printf("         <p class='data'>%s</p>",$row['TYPE_DE_JURY']);
+                  $Niv_data = idNivToNiv(CONNECTION,$row['ID_NIVEAU']);
+                  while($Niv = mysqli_fetch_assoc($Niv_data))
+                  {
+                  printf("         <p class='data'>%s</p>
+                                </div>
+                               </a>"  
+                            ,$Niv['LBL_NIVEAUX']);
+                  }       //  affichage du tableau d'apres BD
                 }
             }
             ?>
 
           </div>
         </div>
+       
+       
+       
+       
+       
+       
+       
+       
         <div><h1 class="bigTitle">Ajouter une jury:</h1></div>
-        <div class="formContainer">
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        <div class="formContainer">  
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <div class="inputContainer">
                 <label for="Fil">Filiere:</label>
@@ -154,12 +154,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 <select id="Niveau" name="Niveau" class="dropDown">
                 
                 <?php
-                  $data = niveau_liste(CONNECTION,$_POST['FIL']);
+                  $data = niveau_liste(CONNECTION);
                   while($row = mysqli_fetch_assoc($data))
                   {
                     printf(
                       "<option value='%d'> %s </option>",
-                      $row['ID_NIVEAUX'],$row['LBL_NIVEAUX']
+                      $row['ID_NIVEAU'],$row['LBL_NIVEAUX']
                     );
                   }
                   ?>

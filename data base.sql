@@ -44,7 +44,7 @@ create table ENCADREMENT
    DATE                 date,
    NOTE                 text,
    primary key (ID_ENCADREMENT)
-)
+);
 
 
 /*==============================================================*/
@@ -57,7 +57,7 @@ create table FILLIERE
    LBL_FILLIERE         varchar(50),
    NBR_NIVEAU           int,
    primary key (ID_FILLIERE)
-)
+);
 
 
 /*==============================================================*/
@@ -73,7 +73,7 @@ create table JURY
    NOTE                 text,
    TYPE_DE_JURY         varchar(20),
    primary key (ID_JURY)
-)
+);
 
 /*==============================================================*/
 /* Table : NIVEAU                                               */
@@ -84,7 +84,7 @@ create table NIVEAU
    ID_FILLIERE          bigint not null,
    LBL_NIVEAUX          varchar(10),
    primary key (ID_NIVEAU)
-)
+);
 
 /*==============================================================*/
 /* Table : PARTICIPER                                           */
@@ -109,7 +109,7 @@ create table PROFESSEUR
    EMAIL_EDU            varchar(50),
    EMAIL_PERS           varchar(50),
    primary key (ID_PROFESSEUR)
-)
+);
 
 /*==============================================================*/
 /* Table : RESPONSABLE                                          */
@@ -120,7 +120,7 @@ create table RESPONSABLE
    ID_RESPONSABLE       bigint not null AUTO_INCREMENT,
    LBL_RESPO            varchar(20),
    primary key (ID_RESPONSABLE)
-)
+);
 
 
 /*==============================================================*/
@@ -136,7 +136,7 @@ create table VISITE
    DATE_FIN             datetime,
    NOTE                 text,
    primary key (ID_VISITE)
-)
+);
 
 
 alter table ASSISTER add constraint FK_ASSISTER foreign key (ID_PROFESSEUR)

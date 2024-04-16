@@ -1,6 +1,11 @@
 <?php
 include("../php web/connection.php");
 include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
+
+
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
@@ -19,7 +24,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             // passer le prof comme un respo avant de le mettre comme chef de filliere
             mysqli_query(CONNECTION, $responsabilite);
 
-              $id_respo = prof_to_id_respo(CONNECTION,$id_respo);
+              $id_respo = idProfToIdRespo(CONNECTION,$id_respo);
               $requet="INSERT INTO encadrement (ID_RESPONSABLE,ID_FILLIERE,ID_NIVEAU,ETUDIANT) 
               values ('$id_respo','$fillier','$nom','$niveau','$etudiant')";
               $result = mysqli_query(CONNECTION, $requet);

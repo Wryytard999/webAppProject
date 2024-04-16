@@ -12,7 +12,7 @@ function cheker_prof($connection,$code)
 
 function cheker_Fill($connection,$Chef_FIl,$nom)
 {
-    $query = "SELECT * FROM niveau 
+    $query = "SELECT * FROM filliere
                 WHERE LBL_FILLIERE = '$nom'
                 AND ID_RESPONSABLE = '$Chef_FIl'";
     $result = mysqli_query($connection, $query);

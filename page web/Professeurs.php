@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $code_APOGEE = htmlspecialchars($_POST['codeAPOGEE']);
           $tel = htmlspecialchars($_POST['tel']);
 
-          if(!cheker_prof(CONNECTION,$email_uni))
+          if(!cheker_prof(CONNECTION,$code_APOGEE))
           {
               $requet="INSERT INTO professeur (CODE_APOGE,PRENOM,NOM,CONTACT,EMAIL_EDU,EMAIL_PERS) 
                         values ('$code_APOGEE','$prenom','$nom','$tel','$email_uni','$email_sec')";
@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             printf("<div class='error-message'>
                       <p> Le Prof  %s %s  existe déjà </p>
                     </div>"
-                    , htmlspecialchars($nom, ENT_QUOTES),htmlspecialchars($prenom, ENT_QUOTES));
+                    ,htmlspecialchars($nom, ENT_QUOTES),htmlspecialchars($prenom, ENT_QUOTES));
             header('refresh');
           }
         }

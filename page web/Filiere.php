@@ -1,6 +1,9 @@
 <?php
 include("../php web/connection.php");
 include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -16,34 +19,43 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           
           if(!cheker_Fill(CONNECTION , $Chef_FIl , $nom))//checker si la filliere existe ou non
           {
-              $responsabilite = prof_to_respo(CONNECTION,$Chef_FIl);// passer le prof comme un respo avant de le mettre comme chef de filliere
-              
-              $id_respo = id_prof_to_id_respo(CONNECTION,$Chef_FIl);
-
-              for($i=$Niv;$i>0;$i-=1)
+              $responsabilite = profToChef(CONNECTION,$Chef_FIl);// passer le prof comme un chef de filliere
+              if($responsabilite)
               {
-                $lbl = $nom ." ". $i;
-                $requet= "INSERT INTO niveau (ID_NIVEAU,ID_RESPONSABLE,LBL_FILLIERE,NBR_NIVEAU) values ('$i','$id_respo','$lbl','$Niv')";// inserer niveau basé sur les filliere
-                mysqli_query(CONNECTION, $requet);
-              }
+                $id_respo = idProfToIdRespo(CONNECTION,$Chef_FIl);// recever son id
+          
+                $query = "INSERT INTO filliere (ID_RESPONSABLE,LBL_FILLIERE,NBR_NIVEAU)
+                            VALUES ('$id_respo','$nom','$Niv')";
+                mysqli_query(CONNECTION,$query);//inserer la nouvelle filliere au tableaux
 
-              //remplir tableau de filliere
-              
-                echo '<div class="success-message">';
-                echo '<p>La filliere ' . htmlspecialchars($nom, ENT_QUOTES) . ' a été enregistrée avec succès</p>';
-                echo '</div>'; 
+                $id_fillier = id_fillier(CONNECTION,$id_respo,$nom);
+
+                for($i=$Niv;$i>0;$i-=1)
+                {
+                  $lbl = $nom ." ". $i;
+                  $requet= "INSERT INTO niveau (ID_FILLIERE,LBL_NIVEAUX) values ('$id_fillier','$lbl')";// inserer niveau basé sur les filliere
+                  mysqli_query(CONNECTION, $requet);
+                }
+            
+                //remplir tableau de filliere
+                
+
+                printf("<div class='success-message'>
+                          <p> La Filliere << %s >> est ajoute par succes </p>
+                      </div>"
+                      ,htmlspecialchars($nom, ENT_QUOTES));
                 header('refresh');
-              
-                            
+                
+              }                
           }// bcp execption a gerer
         else
         {
-          echo '<div class="error-message">';
-          echo '<p>La Filiere ' . htmlspecialchars($nom, ENT_QUOTES) .' existe déjà </p>';
-          echo '</div>';
-          header('refresh');
-        }  
-          
+          printf("<div class='error-message'>
+                      <p> La Filliere << %s >>  existe déjà </p>
+                    </div>"
+                    ,htmlspecialchars($nom, ENT_QUOTES));
+            header('refresh');
+        } 
       }
     }
 }
@@ -75,24 +87,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             $data = appel_filier(CONNECTION);
             if($data)
             {
-                  while($row = mysqli_fetch_assoc($data))
+                  while($row = mysqli_fetch_assoc($data))//  affichage du tableau d'apres BD
                 {
-                    echo "<a href='affichageFil.php'>";
-                      echo "<div class='tableRow'>";
-                        echo "<p class='data'>";
-                            echo $row["LBL_FILLIERE"];
-                        echo "</p>";
-                          //  affichage du tableau d'apres BD
-                          $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
-                          while($prof = mysqli_fetch_assoc($prof_data))
-                          {
-                            echo "<p class='data'>";
-                            echo $prof['NOM'] . ' ' . $prof['PRENOM'];
-                            echo "</p>";
-                          }
+                  $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
+                  printf("<a href='affichageFil.php'>
+                            <div class='tableRow'>
+                              <p class='data'> %s </p>"
+                              ,$row["LBL_FILLIERE"]);
+                                while($prof = mysqli_fetch_assoc($prof_data))
+                                {
+                                  printf("<p class='data'> %s %s </p>"
+                                          ,$prof["PRENOM"],$prof["NOM"]);
+                                }
 
-                      echo "</div>";
-                    echo "</a>";
+                    printf("</div>;
+                            </a>");
                   }
             }
             ?>
