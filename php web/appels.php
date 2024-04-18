@@ -29,4 +29,9 @@ function appel_encadrement($connection)
     return $result;
 }
 
-function appel_visite($connection){}
+function appel_visite($connection)
+{
+    $query = "SELECT * FROM visite ORDER BY ID_VISITE DESC";
+    $result = mysqli_query($connection, $query);
+    return $result;
+}

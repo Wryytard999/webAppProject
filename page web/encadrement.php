@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
-        if(!empty($_POST['Etudiant']) && !empty($_POST['Fil']) && !empty($_POST["Niveau"]) && !empty($_POST['respo']))
+        if(isset($_POST['Etudiant']) && isset($_POST['Fil']) && isset($_POST["Niveau"]) && isset($_POST['respo']))
         {
           $etudiant = $_POST['Etudiant'];
           $fillier = $_POST['Fil'];
@@ -128,7 +128,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   while($row = mysqli_fetch_assoc($data))
                   {
                     printf("<option value='%d'> %s </option>",
-                      $row['ID_NIVEAUX'],$row['LBL_NIVEAUX']
+                      $row['ID_NIVEAU'],$row['LBL_NIVEAUX']
                     );
                   }
                   ?>

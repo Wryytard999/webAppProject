@@ -10,9 +10,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
-      if(!empty($_POST['respo'])  &&  !empty($_POST['type']) 
-            && !empty($_POST['Fil'] && !empty($_POST["Niveau"]))
-            &&  !empty($_POST['dateStart']) )
+      if(isset($_POST['respo'])  &&  isset($_POST['type']) 
+            && isset($_POST['Fil']) && isset($_POST["Niveau"])
+            &&  isset($_POST['dateStart']))
         {
           $id_respo = htmlspecialchars($_POST['respo']);
           $type = htmlspecialchars($_POST['type']);

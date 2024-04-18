@@ -88,3 +88,15 @@ function encadrement_prof($connection,$id_respo,$etudiant)
 {
 
 }
+function id_visite($connection,$id_respo,$date_start,$destination,$niv)
+{
+    $query = "SELECT ID_VISITE FROM visite
+                WHERE ID_RESPONSABLE = '$id_respo'
+                AND ID_NIVEAU = '$niv'
+                AND DATE_DEBUT = '$date_start'
+                AND LIEU = '$destination'";
+    $result = mysqli_query($connection, $query);
+    $data = mysqli_fetch_assoc($result);
+    return $data["ID_VISITE"];
+}
+
