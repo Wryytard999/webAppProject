@@ -1,11 +1,5 @@
 @import url(./index.css);
 
-.title {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .navBar {
   display: flex;
   position: fixed;
@@ -27,7 +21,7 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  min-height: 60%;
+  min-height: 50%;
   justify-content: space-between;
 }
 
@@ -43,8 +37,9 @@
   font-size: 1rem;
 }
 
-.selected {
+.selected h3 {
   color: var(--selected);
+  font-size: 1.5rem;
 }
 
 .conatiner h1 {
