@@ -39,6 +39,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             header('refresh');
           }
         }
+        else
+      { 
+                 printf("<div class='error'>
+                      <p> Erreur  </p>
+                    </div>");
+            header('refresh');
+
+      }
     }
 }
 ?>

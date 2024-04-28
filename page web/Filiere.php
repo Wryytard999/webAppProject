@@ -57,6 +57,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             header('refresh');
         } 
       }
+      else
+      { 
+                 printf("<div class='error'>
+                      <p> Erreur  </p>
+                    </div>");
+            header('refresh');
+
+      }
     }
 }
 ?>
@@ -105,10 +113,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   }
             }
             ?>
-                      
-
-
-
           </div>
         </div>
         <div><h1 class="bigTitle">Ajouter une filiere:</h1></div>

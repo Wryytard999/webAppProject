@@ -44,3 +44,11 @@
     margin-bottom: 1px; /* Margin bottom */
     text-align: center; /* Center align text */
 }
+.error {
+  background-color: #f00707; /* Orange background color */
+  color: white; /* White text color */
+  padding: 10px; /* Padding */
+  padding-left: 20px;
+  margin-bottom: 1px; /* Margin bottom */
+  text-align: center; /* Center align text */
+}

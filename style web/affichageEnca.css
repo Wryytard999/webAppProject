@@ -20,7 +20,7 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  -ms-overflow-style: scrollbar; /* IE and Edge */
+  -ms-overflow-style: scrollbar;/* IE and Edge */
   scrollbar-width: auto; /* Firefox */
 }
 .tableContainer::-webkit-scrollbar {

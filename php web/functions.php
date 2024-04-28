@@ -84,10 +84,6 @@ function idProfToProf($connection,$id_prof)
     $result = mysqli_query($connection, $querry);
     return $result;
 }
-function encadrement_prof($connection,$id_respo,$etudiant)
-{
-
-}
 function id_visite($connection,$id_respo,$date_start,$destination,$niv)
 {
     $query = "SELECT ID_VISITE FROM visite
@@ -99,4 +95,3 @@ function id_visite($connection,$id_respo,$date_start,$destination,$niv)
     $data = mysqli_fetch_assoc($result);
     return $data["ID_VISITE"];
 }
-

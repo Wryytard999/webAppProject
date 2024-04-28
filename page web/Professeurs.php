@@ -10,8 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
     if(isset($_POST['submit']))
     {
-        if(!empty($_POST['nom']) && !empty($_POST['prenom']) 
-        && !empty($_POST['codeAPOGEE']))
+        if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['codeAPOGEE']))
         {
           $nom = htmlspecialchars($_POST['nom']);
           $prenom = htmlspecialchars($_POST['prenom']);
@@ -43,6 +42,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                     ,htmlspecialchars($nom, ENT_QUOTES),htmlspecialchars($prenom, ENT_QUOTES));
             header('refresh');
           }
+        }
+        else{
+          printf("<div class='error'>
+                      <p> Erreur  </p>
+                    </div>");
+            header('refresh');
+
         }
       }
 }
@@ -106,7 +112,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                     </div>
                     <div class="inputContainer">
                       <label for="adr">CODE APOGEE:</label>
-                      <input type="text" id="adr" name="codeAPOGEE" placeholder="Code professeur">
+                      <input type="text" id="adr" name="codeAPOGEE" placeholder="Code professeur" required>
                     </div>
                       <div class="inputContainer">
                         <label for="tel">Telephone:</label>
