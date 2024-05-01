@@ -116,7 +116,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           
             <?php
 
-            $data = appel_filier(CONNECTION);
+            $data = appel_filier(CONNECTION,null);
             if($data)
             {
                   while($row = mysqli_fetch_assoc($data))//  affichage du tableau d'apres BD
