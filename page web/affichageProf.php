@@ -122,6 +122,7 @@ if(isset($_GET['ID_PROFESSEUR']))
             <p class="data">Filiere</p>
             <p class="data">Niveau</p>
           </div>
+          <div class='tableContainer'>
           <?php
           $id_respo = idProfToIdRespo(CONNECTION,$id_prof);
           $query = "SELECT j.TYPE_DE_JURY , n.LBL_NIVEAUX ,f.LBL_FILLIERE , j.ID_JURY
@@ -133,7 +134,7 @@ if(isset($_GET['ID_PROFESSEUR']))
           $result = mysqli_query(CONNECTION,$query);
           while($row = mysqli_fetch_assoc($result))
           {
-            printf("<div class='tableContainer'>
+            printf("
                     <a href='affichageJury.php?ID_JURY=%s'>
                       <div class='tableRow'>
                         <p class='data'>%s</p>
@@ -141,12 +142,13 @@ if(isset($_GET['ID_PROFESSEUR']))
                         <p class='data'>%s</p>
                       </div>
                     </a>
-                  </div>"
+                  "
                 ,$row['ID_JURY'],$row['TYPE_DE_JURY'],$row['LBL_FILLIERE'],$row['LBL_NIVEAUX']);
                         
           }
           ?>
           </div>
+        </div>
           <!--
           <div class="tableContainer">
             <a href="">
