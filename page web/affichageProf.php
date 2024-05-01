@@ -34,7 +34,7 @@ if(isset($_GET['ID_PROFESSEUR']))
         </div>
         <div class="container">
           <div class="title">
-            <a href="Professeurs.php"><h3>Professeurs</h3></a>
+            <a href="Professeurs.php" class="selected"><h3>Professeurs</h3></a>
           </div>
           <div class="title">
             <a href="Filiere.php"><h3>Filieres</h3></a>
@@ -56,7 +56,7 @@ if(isset($_GET['ID_PROFESSEUR']))
         <div class="header">
             <div><h1 class="bigTitle">Professeur</h1></div>
             <div class="buttons">
-                <div><button class="brownButton">Modifier</button></div>
+                <div><button class="brownButton" onclick="goToPage()">Modifier</button></div>
                 <div><button class="whiteButton">Supprimer</button></div>
             </div>
         </div>
@@ -303,6 +303,13 @@ if(isset($_GET['ID_PROFESSEUR']))
   }
 });
 
+function goToPage() {
+        // Specify the URL of the destination page
+        var nextPageUrl = "modifierProf.html";
+
+        // Redirect to the specified URL
+        window.location.href = nextPageUrl;
+    }
     </script>
   </body>
 </html>

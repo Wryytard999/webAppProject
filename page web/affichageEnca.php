@@ -28,7 +28,7 @@
             <a href="visites.php"><h3>Visites</h3></a>
           </div>
           <div class="title">
-            <a href="encadrement.php"><h3>Encadrement</h3></a>
+            <a href="encadrement.php" class="selected"><h3>Encadrement</h3></a>
           </div>
         </div>
         <a href="Main.html"><button class="whiteButton">END</button></a>
