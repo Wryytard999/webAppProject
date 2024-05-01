@@ -19,7 +19,7 @@
             <a href="Professeurs.php"><h3>Professeurs</h3></a>
           </div>
           <div class="title">
-            <a href="Filiere.php"><h3>Filieres</h3></a>
+            <a href="Filiere.php" class="selected"><h3>Filieres</h3></a>
           </div>
           <div class="title">
             <a href="jury.php"><h3>Jury</h3></a>

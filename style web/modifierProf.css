@@ -1,0 +1,174 @@
+@import url(./index.css);
+
+.navBar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: fit-content;
+  height: 100%;
+  padding: 2.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-right: 0.125rem solid var(--white);
+  background: var(--sideBarRed);
+  backdrop-filter: blur(2rem);
+  font-size: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-height: 50%;
+  justify-content: space-between;
+}
+
+.whiteButton {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background-color: var(--white);
+  font-weight: 700;
+}
+
+.title a {
+  color: var(--unselected);
+  font-size: 1rem;
+}
+
+.selected h3 {
+  color: var(--selected);
+  font-size: 1.5rem;
+}
+
+.conatiner h1 {
+  font-weight: 100;
+  color: var(--white);
+}
+
+strong {
+  font-weight: 900;
+}
+
+
+.tableHead {
+  margin: 0;
+  background: var(--mainRed);
+  width: 75%;
+  height: 3rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 44%;
+  color: var(--white);
+  text-align: left;
+  padding: 1rem;
+}
+.tableRow {
+  margin: 0;
+  width: 100%;
+  height: 3rem;
+  padding: 1rem;
+  background-color: var(--white);
+  color: var(--black);
+  gap: 45%;
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  border: 0.01rem solid;
+}
+.tableContainer {
+  margin: 0;
+  width: 75%;
+  height: 18rem;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  -ms-overflow-style: scrollbar; /* IE and Edge */
+  scrollbar-width: auto; /* Firefox */
+}
+.tableContainer::-webkit-scrollbar {
+  display: block;
+  width: 10px;
+  height: 10px;
+}
+.tableContainer::-webkit-scrollbar-thumb {
+  background: var(--white);
+}
+.containAll {
+  display: flex;
+  height: 100vh;
+  gap: 10%;
+  padding: 0;
+  background-color: var(--backGr);
+}
+.bigTitle {
+  color: var(--white);
+}
+.mainPage {
+  width: 100%;
+  padding-left: 18rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3.125rem;
+  margin-top: 3rem;
+  overflow: scroll;
+  -ms-overflow-style: scrollbar; /* IE and Edge */
+  scrollbar-width: auto; /* Firefox */
+}
+.table {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-weight: 500;
+}
+.formContainer {
+  width: 100%;
+  height: 100%;
+}
+.formContainer form{
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.inputContainer input , .dropDown {
+  background: var(--unselected);
+  width: 100%;
+  height: 3rem;
+  padding: .5rem;
+}
+.inputContainer {
+  display: flex;
+  width: 47%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  color: var(--white);
+  font-weight: 200;
+  height: 20%;
+}
+.brownButton {
+  background-color: var(--mainRed);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+.buttonContainer {
+  margin-bottom: 2rem;
+}
+.data {
+  width: 20%;
+  text-align: left;
+}

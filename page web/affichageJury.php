@@ -22,7 +22,7 @@
             <a href="Filiere.php"><h3>Filieres</h3></a>
           </div>
           <div class="title">
-            <a href="jury.php"><h3>Jury</h3></a>
+            <a href="jury.php" class="selected"><h3>Jury</h3></a>
           </div>
           <div class="title">
             <a href="visites.php"><h3>Visites</h3></a>
