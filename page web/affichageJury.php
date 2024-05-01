@@ -1,3 +1,17 @@
+<?php
+include("../php web/connection.php");
+include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
+
+
+
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

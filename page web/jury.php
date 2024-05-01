@@ -110,13 +110,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           <div class="tableContainer">
           
             <?php 
-            $data = apepel_jury(CONNECTION);
+            $data = apepel_jury(CONNECTION,null);
             if($data)
             {
                   while($row = mysqli_fetch_assoc($data))
                 {
-                  printf("      <a href='affichageJury.php'>
-                                  <div class='tableRow'>");
+                  printf("      <a href='affichageJury.php?ID_JURY=%s'>
+                                  <div class='tableRow'>",$row['ID_JURY']);
                   
                   $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
                   while($prof = mysqli_fetch_assoc($prof_data))

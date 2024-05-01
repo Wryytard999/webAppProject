@@ -108,7 +108,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           </div>
           <div class="tableContainer">
             <?php 
-            $data = appel_visite(CONNECTION);
+            $data = appel_visite(CONNECTION,null);
             if($data)
             {
                   while($row = mysqli_fetch_assoc($data))

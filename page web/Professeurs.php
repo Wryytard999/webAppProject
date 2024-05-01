@@ -100,16 +100,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   </div>
                   <div class="tableContainer">
                       <?php
-                          $data =appel_prof(CONNECTION);
+                          $data =appel_prof(CONNECTION,null);
                           while ($row = mysqli_fetch_assoc($data)) //  affichage du tableau d'apres BD
                           {
-                            printf("<a href='affichageProf.php'>
+                            printf("<a href='affichageProf.php?ID_PROFESSEUR=%s'>
                                       <div class='tableRow'>
                                         <p class='data'>%s %s</p>
                                         <p class='data'>%s</p>
                                       </div>
                                     </a>"
-                                    ,$row["NOM"],$row["PRENOM"],$row["EMAIL_EDU"]);
+                                    ,$row['ID_PROFESSEUR'],$row["NOM"],$row["PRENOM"],$row["EMAIL_EDU"]);
                           }
                           
                         ?>

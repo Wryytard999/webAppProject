@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           <div class="tableContainer">
             
           <?php
-          $data = appel_encadrement(CONNECTION);
+          $data = appel_encadrement(CONNECTION,null);
           while($row = mysqli_fetch_assoc($data))
           {
             printf("    <a href='affichageEnca.php'>
