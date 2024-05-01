@@ -142,7 +142,7 @@ if(isset($_GET['ID_PROFESSEUR']))
                       </div>
                     </a>
                   </div>"
-                ,$row['ID_JURY'],$row['TYPE_DE_JURY'],$row['LBL_NIVEAUX'],$row['LBL_FILLIERE']);
+                ,$row['ID_JURY'],$row['TYPE_DE_JURY'],$row['LBL_FILLIERE'],$row['LBL_NIVEAUX']);
                         
           }
           ?>
