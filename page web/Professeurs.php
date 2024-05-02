@@ -117,7 +117,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 </div>
                 <div><h1 class="bigTitle">Ajouter un professeur:</h1></div>
                 <div class="formContainer">
-                  <form action="" method="post">
+                  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                     <div class="inputContainer">
                       <label for="nom">Nom:</label>
                       <input type="text" id="nom" name="nom" placeholder="Nom">
