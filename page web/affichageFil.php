@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../style web/affichageFil.css" />
+    <link rel="stylesheet" href="../style web/modifierProf.css" />
     <title>Document</title>
     <script src="../LoadSidebar.js"></script>
   </head>
@@ -37,17 +37,35 @@
       <div class="mainPage">
         <div class="header">
             <div><h1 class="bigTitle">Filiere Genie Informatique:</h1></div>
-            <div class="buttons">
-                <div><button class="brownButton">Modifier</button></div>
-                <div><button class="whiteButton">Supprimer</button></div>
-            </div>
         </div>
         <div class="dataContainersContainer">
-            <div class="dataContainer">
-                <h4 class="miniTitle">Chef de filiere:</h4>
-                <h4 class="personalData">Hamid Akessas</h4>
-            </div>
-        </div>
+                <div class="formContainer">
+                  <form action="" method="post">
+                    <div class="inputContainer">
+                        <label for="Nom">Nom:</label>
+                        <input type="text" name="Nom" class="Nom" id="Nom">
+                    </div>
+                    <div class="inputContainer">
+                        <label for="respo">Chef de filiere:</label>
+                        <select id="respo" name="respo" class="dropDown">
+                        </select>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="niv">Niveau:</label>
+                        <select id="niv" name="niv" class="dropDown">
+                        </select>
+                    </div>
+                    <div class="filler"></div>
+                    <div class="buttonContainer">
+                        <input type="submit" name="submit" value="Sauvegarder" class="brownButton">
+                        <div><button class="whiteButton">Supprimer</button></div>
+                        <div><button class="brownButton">Creer rapport</button></div>
+                    </div>
+                  </form>
+                </div>
+         </div>
+
+
         <h3 class="miniTitle">Jurys:</h3>
         <div class="table">
           <div class="tableHead">
@@ -167,72 +185,59 @@
             </a>
           </div>
         </div>
-        <div><button class="brownButton">Creer rapport</button></div>
       </div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-  const links = document.querySelectorAll(".container .title a");
-  const endButton = document.querySelector(".navBar .whiteButton");
+         
+         // Function to populate dropdown with options
+         function populateDropdown(selectId, options) {
+             var selectElement = document.getElementById(selectId);
+             
+             // Clear existing options
+             selectElement.innerHTML = '';
 
-  // Function to handle link click
-  function handleLinkClick(link) {
-    // Remove the "selected" class from all links
-    links.forEach(function(otherLink) {
-      otherLink.classList.remove("selected");
-    });
+             // Add new options
+             options.forEach(function(option) {
+                 var optionElement = document.createElement('option');
+                 optionElement.value = option.value;
+                 optionElement.textContent = option.label;
+                 selectElement.appendChild(optionElement);
+             });
+         }
 
-    // Add the "selected" class to the clicked link
-    link.classList.add("selected");
+         function loadData() {
+           // Example data (you can replace this with data loaded from a source like an API)
+           var loadedData = {
+               Nom: "Genie Informatique"
+           };
+   
+           // Set the input field values with the loaded data
+           document.getElementById("Nom").value = loadedData.Nom;
+       }
 
-    // Store the href of the selected link in sessionStorage
-    sessionStorage.setItem("selectedLink", link.getAttribute("href"));
-  }
+         // Function to load data into dropdowns when the page is loaded
+         window.onload = function() {
+             // Data for 'Niveau' dropdown
+             var niveaux = [
+                 { value: '2', label: '2' },
+                 { value: '3', label: '3' }
+             ];
 
-  // Check if there's a stored selected link on page load
-  const selectedLink = sessionStorage.getItem("selectedLink");
+             // Data for 'Encadrant' dropdown
+             var responsables = [
+                 { value: 'wadia el bahri', label: 'Wadia El Bahri' },
+                 { value: 'another responsable', label: 'Another responsable' },
+                 { value: 'yet another responsable', label: 'Yet Another responsable' }
+             ];
 
-  if (selectedLink) {
-    // Apply the "selected" class to the previously selected link
-    const previouslySelectedLink = document.querySelector(
-      `.container .title a[href='${selectedLink}']`
-    );
+             // Populate 'Niveau' dropdown
+             populateDropdown('niv', niveaux);
 
-    if (previouslySelectedLink) {
-      previouslySelectedLink.classList.add("selected");
-    }
-  }
+             // Populate 'Encadrant' dropdown
+             populateDropdown('respo', responsables);
 
-  // Attach click event listener to each link
-  links.forEach(function(link) {
-    link.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Handle link click (change class and store selected link)
-      handleLinkClick(link);
-
-      // Navigate to the clicked link
-      window.location.href = link.getAttribute("href");
-    });
-  });
-
-  // Attach click event listener to the "HAMDOLLAH" button
-  if (endButton) {
-    endButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Find the "Professeurs" link and add the "selected" class
-      const professeursLink = document.querySelector(".container .title a[href='Professeurs.php']");
-      if (professeursLink) {
-        handleLinkClick(professeursLink);
-      }
-
-      // Navigate to the "Main.html" URL
-      window.location.href = "Main.html";
-    });
-  }
-});
-
+             loadData();
+         };
     </script>
   </body>
 </html>

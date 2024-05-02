@@ -21,11 +21,11 @@ if(isset($_GET['ID_PROFESSEUR']))
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../style web/affichageProf.css" />
+    <link rel="stylesheet" href="../style web/modifierProf.css" />
     <title>Document</title>
     <script src="../LoadSidebar.js"></script>
   </head>
-  <body>
+  <body onload="loadData()">
     <div class="containAll">
     <div class="sideContainer">
       <div class="navBar">
@@ -55,13 +55,47 @@ if(isset($_GET['ID_PROFESSEUR']))
       <div class="mainPage">
         <div class="header">
             <div><h1 class="bigTitle">Professeur</h1></div>
-            <div class="buttons">
-                <div><button class="brownButton" onclick="goToPage()">Modifier</button></div>
-                <div><button class="whiteButton">Supprimer</button></div>
-            </div>
         </div>
-        <div class="dataContainersContainer">
-        <?php
+        <div class="dataContainersContainer"> 
+        <div>
+                <div class="formContainer">
+                  <form action="" method="post">
+                    <div class="inputContainer">
+                      <label for="nom">Nom:</label>
+                      <input type="text" id="nom" name="nom" placeholder="Nom dyalo">
+                    </div>
+                    <div class="inputContainer">
+                      <label for="prenom">Prenom:</label>
+                      <input type="text" id="prenom" name="prenom" placeholder="Prenom dyalo">
+                    </div>
+                    <div class="inputContainer">
+                      <label for="emailUni">Email universitaire:</label>
+                      <input type="email" id="emailUni" name="emailUni" placeholder="exemple@uiz.ac.ma">
+                    </div>
+                    <div class="inputContainer">
+                      <label for="emailSec">Email secondaire:</label>
+                      <input type="email" id="emailSec" name="emailSec" placeholder="exemple@gmail.com">
+                    </div>
+                    <div class="inputContainer">
+                      <label for="adr">CODE APOGEE:</label>
+                      <input type="text" id="adr" name="codeAPOGEE" placeholder="Code professeur" required>
+                    </div>
+                      <div class="inputContainer">
+                        <label for="tel">Telephone:</label>
+                        <input type="tel" id="tel" name="tel" placeholder="0699999999">
+                      </div>
+                      <div class="buttonContainer">
+                        <input type="submit" name="submit" value="Sauvegarder" class="brownButton">
+                        <div><button class="whiteButton">Supprimer</button></div>
+                        <div><button class="brownButton">Creer rapport</button></div>
+                      </div>
+                  </form>
+                </div>
+        </div> 
+        <!--
+          Php 7ta tchouf ach dir lih mabghit n7ydo!!!
+
+
           $data = appel_prof(CONNECTION, $id_prof);
           while($row = mysqli_fetch_assoc($data))
           {
@@ -89,7 +123,7 @@ if(isset($_GET['ID_PROFESSEUR']))
               ,$row['CONTACT'], $row['CODE_APOGE'] );
           }
         
-        ?>   
+        -->   
         
         <!--
              <div class="dataContainer">
@@ -237,79 +271,28 @@ if(isset($_GET['ID_PROFESSEUR']))
             </a>
           </div>
         </div>
-        <div><button class="brownButton">Creer rapport</button></div>
       </div>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-  const links = document.querySelectorAll(".container .title a");
-  const endButton = document.querySelector(".navBar .whiteButton");
-
-  // Function to handle link click
-  function handleLinkClick(link) {
-    // Remove the "selected" class from all links
-    links.forEach(function(otherLink) {
-      otherLink.classList.remove("selected");
-    });
-
-    // Add the "selected" class to the clicked link
-    link.classList.add("selected");
-
-    // Store the href of the selected link in sessionStorage
-    sessionStorage.setItem("selectedLink", link.getAttribute("href"));
-  }
-
-  // Check if there's a stored selected link on page load
-  const selectedLink = sessionStorage.getItem("selectedLink");
-
-  if (selectedLink) {
-    // Apply the "selected" class to the previously selected link
-    const previouslySelectedLink = document.querySelector(
-      `.container .title a[href='${selectedLink}']`
-    );
-
-    if (previouslySelectedLink) {
-      previouslySelectedLink.classList.add("selected");
-    }
-  }
-
-  // Attach click event listener to each link
-  links.forEach(function(link) {
-    link.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Handle link click (change class and store selected link)
-      handleLinkClick(link);
-
-      // Navigate to the clicked link
-      window.location.href = link.getAttribute("href");
-    });
-  });
-
-  // Attach click event listener to the "HAMDOLLAH" button
-  if (endButton) {
-    endButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Find the "Professeurs" link and add the "selected" class
-      const professeursLink = document.querySelector(".container .title a[href='Professeurs.php']");
-      if (professeursLink) {
-        handleLinkClick(professeursLink);
-      }
-
-      // Navigate to the "Main.html" URL
-      window.location.href = "Main.html";
-    });
-  }
-});
-
-function goToPage() {
-        // Specify the URL of the destination page
-        var nextPageUrl = "modifierProf.html";
-
-        // Redirect to the specified URL
-        window.location.href = nextPageUrl;
-    }
+    <script>// Function to load data into the form fields
+    function loadData() {
+            // Example data (you can replace this with data loaded from a source like an API)
+            var loadedData = {
+                nom: "el bahri",
+                prenom: "wadia",
+                emailsec: "wadiabahri@example.com",
+                emailuni: "wadiabahri@uiz.ac.ma",
+                codeapogee: "P999",
+                tel: "0691903716"
+            };
+    
+            // Set the input field values with the loaded data
+            document.getElementById("nom").value = loadedData.nom;
+            document.getElementById("prenom").value = loadedData.prenom;
+            document.getElementById("emailUni").value = loadedData.emailuni;
+            document.getElementById("emailSec").value = loadedData.emailsec;
+            document.getElementById("adr").value = loadedData.codeapogee;
+            document.getElementById("tel").value = loadedData.tel;
+        }
     </script>
   </body>
 </html>

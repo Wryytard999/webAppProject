@@ -30,6 +30,7 @@
   text-align: center;
   background-color: var(--white);
   font-weight: 700;
+  cursor: pointer;
 }
 
 .title a {
@@ -59,7 +60,7 @@ strong {
   height: 3rem;
   display: flex;
   align-items: flex-start;
-  gap: 44%;
+  gap: 20%;
   color: var(--white);
   text-align: left;
   padding: 1rem;
@@ -71,16 +72,16 @@ strong {
   padding: 1rem;
   background-color: var(--white);
   color: var(--black);
-  gap: 45%;
+  gap: 20%;
   display: flex;
   align-items: flex-start;
   text-align: left;
   border: 0.01rem solid;
 }
-.tableContainer {
+.tableContainer { 
   margin: 0;
   width: 75%;
-  height: 18rem;
+  height: 10rem;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -108,6 +109,7 @@ strong {
 .mainPage {
   width: 100%;
   padding-left: 18rem;
+  margin-bottom: 1rem;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -143,6 +145,7 @@ strong {
   width: 100%;
   height: 3rem;
   padding: .5rem;
+  appearance: auto;
 }
 .inputContainer {
   display: flex;
@@ -167,8 +170,71 @@ strong {
 }
 .buttonContainer {
   margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
 }
 .data {
   width: 20%;
   text-align: left;
+}
+.dataContainersContainer {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.header {
+  width: 75%;
+  display: flex;
+  align-items: center;
+  gap: 40%;
+}
+.miniTitle {
+  color: var(--white);
+  font-weight: 100;
+}
+
+.NotesContainer textarea {
+  font-weight: 500;
+  background: var(--unselected);
+  width: 100%;
+  min-height: 3rem;
+  padding: 1rem;
+}
+
+.NotesContainer {
+  display: flex;
+  width: 47%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  color: var(--white);
+  font-weight: 200;
+  height: 20%;
+}
+
+.filler {
+  width: 25rem;
+}
+
+#Ftable .tableHead {
+  gap: 19%;
+}
+#Ftable .tableRow {
+  gap: 20%;
+  height: 3.5rem;
+}
+#Ftable {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-weight: 500;
 }

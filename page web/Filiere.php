@@ -179,68 +179,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
       </div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-  const links = document.querySelectorAll(".container .title a");
-  const endButton = document.querySelector(".navBar .whiteButton");
-
-  // Function to handle link click
-  function handleLinkClick(link) {
-    // Remove the "selected" class from all links
-    links.forEach(function(otherLink) {
-      otherLink.classList.remove("selected");
-    });
-
-    // Add the "selected" class to the clicked link
-    link.classList.add("selected");
-
-    // Store the href of the selected link in sessionStorage
-    sessionStorage.setItem("selectedLink", link.getAttribute("href"));
-  }
-
-  // Check if there's a stored selected link on page load
-  const selectedLink = sessionStorage.getItem("selectedLink");
-
-  if (selectedLink) {
-    // Apply the "selected" class to the previously selected link
-    const previouslySelectedLink = document.querySelector(
-      `.container .title a[href='${selectedLink}']`
-    );
-
-    if (previouslySelectedLink) {
-      previouslySelectedLink.classList.add("selected");
-    }
-  }
-
-  // Attach click event listener to each link
-  links.forEach(function(link) {
-    link.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Handle link click (change class and store selected link)
-      handleLinkClick(link);
-
-      // Navigate to the clicked link
-      window.location.href = link.getAttribute("href");
-    });
-  });
-
-  // Attach click event listener to the "HAMDOLLAH" button
-  if (endButton) {
-    endButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Find the "Professeurs" link and add the "selected" class
-      const professeursLink = document.querySelector(".container .title a[href='Professeurs.php']");
-      if (professeursLink) {
-        handleLinkClick(professeursLink);
-      }
-
-      // Navigate to the "Main.html" URL
-      window.location.href = "Main.html";
-    });
-  }
-});
-
     </script>
   </body>
 </html>

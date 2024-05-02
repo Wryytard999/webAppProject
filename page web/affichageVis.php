@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../style web/affichageVis.css" />
+    <link rel="stylesheet" href="../style web/modifierProf.css" />
     <title>Document</title>
     <script src="../LoadSidebar.js"></script>
   </head>
@@ -37,38 +37,45 @@
       <div class="mainPage">
         <div class="header">
             <div><h1 class="bigTitle">Visite Akessas-Taroudant:</h1></div>
-            <div class="buttons">
-                <div><button class="brownButton">Modifier</button></div>
-                <div><button class="whiteButton">Supprimer</button></div>
-            </div>
         </div>
         <div class="dataContainersContainer">
-            <div class="dataContainer">
-                <h4 class="miniTitle">Responsable:</h4>
-                <h4 class="personalData">Hamid Akessas</h4>
-            </div>
-            <div class="dataContainer">
-                <h4 class="miniTitle">Daestination:</h4>
-                <h4 class="personalData">Taroudant</h4>
-            </div>
-            <div class="dataContainer">
-                <h4 class="miniTitle">Niveau:</h4>
-                <h4 class="personalData">Genie Informatique 1</h4>
-            </div>
-            <div class="dataContainer">
-                <h4 class="miniTitle">Date depart:</h4>
-                <h4 class="personalData">04/11/2024</h4>
-            </div>
-            <div class="dataContainer">
-                <h4 class="miniTitle">Date retour:</h4>
-                <h4 class="personalData">04/27/2024</h4>
-            </div>
-            <div class="filler"></div>
-            <div class="dataContainer">
-                <h4 class="miniTitle">Notes:</h4>
-                <h4 class="Notes">Laboris aliqua eiusmod enim cupidatat ad dolore aliqua eu minim aliqua. Ullamco veniam ut consectetur adipisicing Lorem consectetur ipsum tempor nostrud mollit amet nostrud exercitation. Ad officia ut ipsum consectetur Lorem nulla. Aute est mollit incididunt quis quis commodo magna dolore aute. Culpa ea reprehenderit sunt eu dolor voluptate. Mollit exercitation magna quis esse consectetur adipisicing sunt magna mollit nostrud.</h4>
-            </div>
-        </div>
+                <div class="formContainer">
+                  <form action="" method="post">
+                    <div class="inputContainer">
+                      <label for="Destination">Destination:</label>
+                      <input type="text" name="Destination" id="Destination" placeholder="Destination">
+                    </div>
+                    <div class="inputContainer">
+                        <label for="Fil">Niveau:</label>
+                        <select id="Fil" name="Fil" class="dropDown">
+                        </select>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="respo">Responsable:</label>
+                        <select id="respo" name="respo" class="dropDown">
+                        </select>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="dateStart">Date depart:</label>
+                        <input type="date" name="dateStart" class="date" id="dateStart">
+                    </div>
+                    <div class="NotesContainer">
+                        <label for="notes">Notes:</label>
+                        <textarea id="Notes" name="notes" placeholder="notes" rows="4" cols="50"></textarea>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="dateEnd">Date retour:</label>
+                        <input type="date" name="dateEnd" class="date" id="dateEnd">
+                    </div>
+                    <div class="filler"></div>
+                    <div class="buttonContainer">
+                        <input type="submit" name="submit" value="Sauvegarder" class="brownButton">
+                        <div><button class="whiteButton">Supprimer</button></div>
+                        <div><button class="brownButton">Creer rapport</button></div>
+                    </div>
+                  </form>
+                </div>
+          </div>
         <h3 class="miniTitle">Participants:</h3>
         <div class="table">
           <div class="tableHead">
@@ -102,72 +109,75 @@
             </a>
           </div>
         </div>
-        <div><button class="brownButton">Creer rapport</button></div>
       </div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-  const links = document.querySelectorAll(".container .title a");
-  const endButton = document.querySelector(".navBar .whiteButton");
+          // Function to populate dropdown with options
+          function populateDropdown(selectId, options) {
+              var selectElement = document.getElementById(selectId);
+              
+              // Clear existing options
+              selectElement.innerHTML = '';
 
-  // Function to handle link click
-  function handleLinkClick(link) {
-    // Remove the "selected" class from all links
-    links.forEach(function(otherLink) {
-      otherLink.classList.remove("selected");
-    });
+              // Add new options
+              options.forEach(function(option) {
+                  var optionElement = document.createElement('option');
+                  optionElement.value = option.value;
+                  optionElement.textContent = option.label;
+                  selectElement.appendChild(optionElement);
+              });
+          }
 
-    // Add the "selected" class to the clicked link
-    link.classList.add("selected");
+          function loadData() {
+            // Example data (you can replace this with data loaded from a source like an API)
+            var loadedData = {
+                Destination: "Taroudant",
+                Notes: "Officia qui fugiat elit labore cillum. Labore pariatur aute eiusmod do ut eiusmod exercitation. Mollit fugiat duis tempor in culpa ad irure mollit aliqua sit pariatur nulla laboris pariatur. Duis excepteur mollit pariatur consequat adipisicing quis occaecat eiusmod. Non dolore pariatur minim eiusmod do. In quis consectetur magna eu sit laborum do ut nulla ea nisi reprehenderit. Anim fugiat qui adipisicing cupidatat cupidatat ut et laboris culpa qui commodo fugiat."
+            };
+    
+            // Set the input field values with the loaded data
+            document.getElementById("Destination").value = loadedData.Destination;
+            document.getElementById("Notes").value = loadedData.Notes;
+        }
 
-    // Store the href of the selected link in sessionStorage
-    sessionStorage.setItem("selectedLink", link.getAttribute("href"));
-  }
+        function setInitialDate() {
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+        document.getElementById('dateStart').value = formattedDate;
+        }
+        function setReturnDate() {
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+        document.getElementById('dateEnd').value = formattedDate;
+        }
 
-  // Check if there's a stored selected link on page load
-  const selectedLink = sessionStorage.getItem("selectedLink");
+          // Function to load data into dropdowns when the page is loaded
+          window.onload = function() {
+              // Data for 'Niveau' dropdown
+              var niveaux = [
+                  { value: 'Genie informaique 1', label: 'Genie informaique 1' },
+                  { value: 'Genie mecanique 2', label: 'Genie mecanique 2' },
+                  { value: 'Genie industriel 1', label: 'Genie industriel 1' }
+              ];
 
-  if (selectedLink) {
-    // Apply the "selected" class to the previously selected link
-    const previouslySelectedLink = document.querySelector(
-      `.container .title a[href='${selectedLink}']`
-    );
+              // Data for 'Encadrant' dropdown
+              var responsables = [
+                  { value: 'wadia el bahri', label: 'Wadia El Bahri' },
+                  { value: 'another responsable', label: 'Another responsable' },
+                  { value: 'yet another responsable', label: 'Yet Another responsable' }
+              ];
 
-    if (previouslySelectedLink) {
-      previouslySelectedLink.classList.add("selected");
-    }
-  }
+              // Populate 'Niveau' dropdown
+              populateDropdown('Fil', niveaux);
 
-  // Attach click event listener to each link
-  links.forEach(function(link) {
-    link.addEventListener("click", function(event) {
-      event.preventDefault();
+              // Populate 'Encadrant' dropdown
+              populateDropdown('respo', responsables);
 
-      // Handle link click (change class and store selected link)
-      handleLinkClick(link);
+              setInitialDate();
+              setReturnDate();
 
-      // Navigate to the clicked link
-      window.location.href = link.getAttribute("href");
-    });
-  });
-
-  // Attach click event listener to the "HAMDOLLAH" button
-  if (endButton) {
-    endButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      // Find the "Professeurs" link and add the "selected" class
-      const professeursLink = document.querySelector(".container .title a[href='Professeurs.php']");
-      if (professeursLink) {
-        handleLinkClick(professeursLink);
-      }
-
-      // Navigate to the "Main.html" URL
-      window.location.href = "Main.html";
-    });
-  }
-});
-
+              loadData();
+          };
     </script>
   </body>
 </html>
