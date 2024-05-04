@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               $responsabilite = profToChef(CONNECTION,$Chef_FIl);// passer le prof comme un chef de filliere
               if($responsabilite)
               {
-                $id_respo = idProfToIdRespo(CONNECTION,$Chef_FIl);// recever son id
+                $id_respo = idProfToIdRespo(CONNECTION,$Chef_FIl,'chef de filliere');// recever son id
           
                 $query = "INSERT INTO filliere (ID_RESPONSABLE,LBL_FILLIERE,NBR_NIVEAU)
                             VALUES ('$id_respo','$nom','$Niv')";
@@ -122,17 +122,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   while($row = mysqli_fetch_assoc($data))//  affichage du tableau d'apres BD
                 {
                   $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
-                  printf("<a href='affichageFil.php'>
+                  printf("<a href='affichageFil.php?ID_FILLIERE= %s'>
                             <div class='tableRow'>
-                              <p class='data'> %s </p>"
-                              ,$row["LBL_FILLIERE"]);
+                              <p class='data'> %s </p>",
+                          $row['ID_FILLIERE'],$row["LBL_FILLIERE"]);
                                 while($prof = mysqli_fetch_assoc($prof_data))
                                 {
                                   printf("<p class='data'> %s %s </p>"
                                           ,$prof["PRENOM"],$prof["NOM"]);
                                 }
 
-                    printf("</div>;
+                    printf("</div>
                             </a>");
                   }
             }

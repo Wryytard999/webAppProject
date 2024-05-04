@@ -42,9 +42,9 @@ function id_fillier($connection,$Chef_FIl,$nom)
     return $data['ID_FILLIERE'];
 }
 
-function idProfToIdRespo($connection,$Chef_FIl)
+function idProfToIdRespo($connection,$Chef_FIl,$lbl)
 {
-    $query = "SELECT ID_RESPONSABLE FROM  responsable WHERE ID_PROFESSEUR = '$Chef_FIl'";
+    $query = "SELECT ID_RESPONSABLE FROM  responsable WHERE ID_PROFESSEUR = '$Chef_FIl' AND LBL_RESPO = '$lbl'";
     $result = mysqli_query($connection, $query);
     $data = mysqli_fetch_array($result);
     return $data['ID_RESPONSABLE'];

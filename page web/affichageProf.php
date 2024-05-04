@@ -212,7 +212,7 @@ if(isset($_GET['ID_PROFESSEUR']))
           </div>
           <div class='tableContainer'>
           <?php
-          $id_respo = idProfToIdRespo(CONNECTION, $id_prof);
+          $id_respo = idProfToIdRespo(CONNECTION, $id_prof,'jury');
           $query = "SELECT j.TYPE_DE_JURY , n.LBL_NIVEAUX ,f.LBL_FILLIERE , j.ID_JURY
                     FROM jury AS j , niveau AS n , filliere AS f
                     WHERE j.ID_NIVEAU = n.ID_NIVEAU
@@ -247,24 +247,27 @@ if(isset($_GET['ID_PROFESSEUR']))
           </div>
           <div class="tableContainer">
               <?php
-          $id_respo = idProfToIdRespo(CONNECTION, $id_prof);
-          $query = "SELECT v.LIEU ,n.LBL_NIVEAUX,v.DATE_DEBUT,v.ID_VISITE
-                    FROM visite AS v , niveau AS n 
-                    WHERE v.ID_NIVEAU = n.ID_NIVEAU 
-                    AND v.ID_RESPONSABLE = '$id_respo'
-                    ORDER BY ID_VISITE";
-          $result = mysqli_query(CONNECTION,$query);
-          while($row = mysqli_fetch_assoc($result))
-          {
-            printf("<a href='affichageVis.php?ID_VISITE=%s'>
-                      <div class='tableRow'>
-                        <p class='data'>%s</p>
-                        <p class='data'>%s</p>
-                        <p class='data'>%s</p>
-                      </div>
-                    </a>
-                  ",$row['ID_VISITE'],$row['LIEU'],$row['LBL_NIVEAUX'],$row['DATE_DEBUT']);
+              $id_respo = idProfToIdRespo(CONNECTION, $id_prof,'visite');
+                  if(isset($id_respo) && !empty($id_respo)) // khasa xihj l cas ta3 prof maxi respo aslan kayt3 error waslan makhsx ytl3 wallo!!
+                  {
+                    $query = "SELECT v.LIEU ,n.LBL_NIVEAUX,v.DATE_DEBUT,v.ID_VISITE
+                              FROM visite AS v , niveau AS n 
+                              WHERE v.ID_NIVEAU = n.ID_NIVEAU 
+                              AND v.ID_RESPONSABLE = '$id_respo'
+                              ORDER BY ID_VISITE";
+                    $result = mysqli_query(CONNECTION,$query);
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+                        printf("<a href='affichageVis.php?ID_VISITE=%s'>
+                                  <div class='tableRow'>
+                                    <p class='data'>%s</p>
+                                    <p class='data'>%s</p>
+                                    <p class='data'>%s</p>
+                                  </div>
+                                 </a>
+                                ",$row['ID_VISITE'],$row['LIEU'],$row['LBL_NIVEAUX'],$row['DATE_DEBUT']);
           }
+        }
                 ?>
           </div>
         </div>
