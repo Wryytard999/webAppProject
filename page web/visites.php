@@ -113,8 +113,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             {
                   while($row = mysqli_fetch_assoc($data))
                 {
-                  printf("      <a href='affichageVis.php'>
-                                  <div class='tableRow'>");
+                  printf("      <a href='affichageVis.php?ID_VISITE=%s'>
+                                  <div class='tableRow'>",$row['ID_VISITE']);
                   
                   $prof_data = id_respo_to_NOM(CONNECTION,$row["ID_RESPONSABLE"]);
                   while($prof = mysqli_fetch_assoc($prof_data))

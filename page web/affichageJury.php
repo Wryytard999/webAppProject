@@ -6,6 +6,7 @@ include("../php web/cheker.php");
 include("../php web/listes.php");
 
 $id_jury = null;
+$old_id_respo =null;
 
 // Retrieving jury ID if present in the URL
 if(isset($_GET['ID_JURY'])) {
@@ -25,7 +26,7 @@ if(isset($_GET['ID_JURY'])) {
 // Handling form submission for updating jury details
 if(isset($_POST['submit'])) {
     if(isset($_POST['type']) && isset($_POST['respo']) && isset($_POST['Fil'])) {
-        $id_filliere = htmlspecialchars($_POST['ID_JURY']);
+        $id_jury = htmlspecialchars($_POST['ID_JURY']);
         $type = htmlspecialchars($_POST['type']);
         $niv = htmlspecialchars($_POST['Fil']);
         $respo = htmlspecialchars($_POST['respo']);
@@ -38,23 +39,18 @@ if(isset($_POST['submit'])) {
         if($result) {
             $id_respo = idProfToIdRespo(CONNECTION, $respo, 'jury');
             $requet = "UPDATE jury
-                       SET  TYPE_DE_JURY = ?,
+                      SET  TYPE_DE_JURY = ?,
                             ID_NIVEAU= ?,
                             ID_RESPONSABLE= ?,
                             DATE_DEBUT = ?,
                             DATE_FIN = ?,
                             NOTE = ?
-                       WHERE ID_JURY = ?";
+                      WHERE ID_JURY = ?";
 
             $stmt = mysqli_prepare(CONNECTION, $requet);
             mysqli_stmt_bind_param($stmt, "siisssi", $type, $niv, $id_respo, $date_start, $date_fin, $note, $id_jury);
             $result = mysqli_stmt_execute($stmt);
             if($result) {
-                $query = "DELETE from responsable 
-                          WHERE ID_RESPONSABLE = '$old_id_respo' 
-                          AND LBL_RESPO ='jury'";
-                mysqli_query(CONNECTION, $query);
-
                 // Display success message
                 printf("<div class='success-message'>
                             <p> La jury est modifier par succes </p>
@@ -68,7 +64,7 @@ if(isset($_POST['submit'])) {
                 printf("<div class='error-message'>
                             <p> La Jury existe déjà </p>
                         </div>");
-                header('Location: jury.php');
+                header('refresh');
             }
         }
     } else {
@@ -76,24 +72,27 @@ if(isset($_POST['submit'])) {
         printf("<div class='error'>
                     <p> Erreur  </p>
                 </div>");
-        header('Location: jury.php');
+        header('refresh');
     }
 } elseif(isset($_POST['supprimer'])) {
-    // Handling form submission for deleting a jury
-    if(isset($_POST['delete_jury'])) {
-        $id_jury = $_POST['delete_jury'];
-        $query = "DELETE FROM jury WHERE ID_JURY = '$id_jury'";
-        $result = mysqli_query(CONNECTION, $query);
-        if($result) {
-            // Display success message
-            printf("<div class='success-message'>
-                        <p> La jury est supprimer par succes </p>
-                    </div>");
-            header('Location: jury.php');
-            die();
+  // Handling form submission for deleting a jury
+  if(isset($_POST['delete_jury'])) {
+      $id_jury = $_POST['delete_jury'];
+      $query = "DELETE FROM jury WHERE ID_JURY = '$id_jury'";
+      $result = mysqli_query(CONNECTION, $query);
+      if($result) {
+          // Display success message
+          printf("<div class='success-message'>
+                      <p> La jury est supprimer par succes </p>
+                  </div>");
+          
+          // Redirect to jury.php after 3 seconds
+          header('refresh: 3; url=jury.php');
+
         }
-    }
+  }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -160,7 +159,7 @@ if(isset($_POST['submit'])) {
                     </div>
                     <div class="NotesContainer">
                         <label for="notes">Notes:</label>
-                        <textarea id="Notes" name="notes" placeholder="notes" rows="4" cols="50"></textarea>
+                        <textarea id="Notes" name="notes" placeholder="note"></textarea>
                     </div>
                     <div class="inputContainer">
                         <label for="dateEnd">Date Fin:</label>
@@ -188,30 +187,24 @@ if(isset($_POST['submit'])) {
                 <p class="data">Email universitaire</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
+            
+            <?php
+            $query = "SELECT pr.ID_PROFESSEUR , pr.PRENOM , pr.NOM,pr.EMAIL_EDU 
+                      FROM participer AS pa ,professeur AS pr
+                      WHERE pa.ID_PROFESSEUR = pr.ID_PROFESSEUR AND pa.ID_JURY = '$id_jury'";
+            $result = mysqli_query(CONNECTION,$query);
+            while($row = mysqli_fetch_assoc($result))
+            {
+              printf("<a href='affichageProf.php?ID_PROFESSEUR=%s'>
+              <div class='tableRow'>
+                <p class='data'>%s %s</p>
+                <p class='data'>%s</p>
               </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-              </div>
-            </a>
-            <a href="">
-                <div class="tableRow">
-                  <p class="data">Wadia</p>
-                  <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-                </div>
-              </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-              </div>
-            </a>
+            </a>"
+          ,$row['ID_PROFESSEUR'],$row['PRENOM'],$row['NOM'],$row['EMAIL_EDU']);
+            }
+            ?>
+
           </div>
         </div>
       </div>

@@ -1,3 +1,93 @@
+<?php
+include("../php web/connection.php");
+include("../php web/functions.php");
+include("../php web/appels.php");
+include("../php web/cheker.php");
+include("../php web/listes.php");
+
+$id_visite = null;
+$old_id_respo =null;
+
+// Retrieving visite ID if present in the URL
+if(isset($_GET['ID_VISITE'])) {
+    $id_visite = $_GET['ID_VISITE'];
+
+    // Query to get the responsible ID for the visite
+    $query = "SELECT r.ID_PROFESSEUR,r.ID_RESPONSABLE
+              FROM visite AS v, responsable AS r
+              WHERE v.ID_RESPONSABLE = r.ID_RESPONSABLE
+              AND v.ID_VISITE = '$id_visite'";
+    $result = mysqli_query(CONNECTION, $query);
+    while($row = mysqli_fetch_assoc($result)) {
+        $old_id_respo = $row['ID_RESPONSABLE'];
+    }
+}
+if(isset($_POST['submit'])) {
+  if(isset($_POST['Destination']) && isset($_POST['respo']) && isset($_POST['Fil'])) {
+      $id_visite = htmlspecialchars($_POST['ID_VISITE']);
+      $Des = htmlspecialchars($_POST['Destination']);
+      $niv = htmlspecialchars($_POST['Fil']);
+      $respo = htmlspecialchars($_POST['respo']);
+      $date_start = htmlspecialchars($_POST['dateStart']);
+      $date_fin = htmlspecialchars($_POST['dateEnd']);
+      $note = htmlspecialchars($_POST['notes']);
+
+      // Convert professor to responsible for the jury
+      $result = profToRespo(CONNECTION, $respo, 'visite');
+      if($result) {
+          $id_respo = idProfToIdRespo(CONNECTION, $respo, 'visite');
+          $requet = "UPDATE visite
+                      SET  LIEU = ?,
+                          ID_NIVEAU= ?,
+                          ID_RESPONSABLE= ?,
+                          DATE_DEBUT = ?,
+                          DATE_FIN = ?,
+                          NOTE = ?
+                    WHERE ID_VISITE = ?";
+
+          $stmt = mysqli_prepare(CONNECTION, $requet);
+          mysqli_stmt_bind_param($stmt, "siisssi", $Des, $niv, $id_respo, $date_start, $date_fin, $note, $id_visite);
+          $result = mysqli_stmt_execute($stmt);
+          if($result) {
+              // Display success message
+              printf("<div class='success-message'>
+                          <p> La visite est modifier par succes </p>
+                      </div>");
+
+              header('refresh');
+          }
+      }
+  } else {
+      // Display error message for missing fields
+      printf("<div class='error'>
+                  <p> Erreur  </p>
+              </div>");
+      header('refresh');
+  }
+}
+elseif(isset($_POST['supprimer'])) {
+  // Handling form submission for deleting a jury
+  if(isset($_POST['delete_visite'])) {
+      $id_jury = $_POST['delete_visite'];
+      $query = "DELETE FROM visite WHERE ID_VISITE = '$id_visite'";
+      $result = mysqli_query(CONNECTION, $query);
+      if($result) {
+          // Display success message
+          printf("<div class='success-message'>
+                      <p> La visite est supprimer par succes </p>
+                  </div>");
+          
+          // Redirect to jury.php after 3 seconds
+          header('refresh: 3; url=visites.php');
+
+        }
+  }
+}
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,7 +126,7 @@
     </div>
       <div class="mainPage">
         <div class="header">
-            <div><h1 class="bigTitle">Visite Akessas-Taroudant:</h1></div>
+            <div><h1 class="bigTitle">Visite :</h1></div>
         </div>
         <div class="dataContainersContainer">
                 <div class="formContainer">
@@ -69,8 +159,14 @@
                     </div>
                     <div class="filler"></div>
                     <div class="buttonContainer">
+                        <input type="hidden" name="ID_VISITE" value="<?php printf("%d",$id_visite) ?>">
                         <input type="submit" name="submit" value="Sauvegarder" class="brownButton">
-                        <div><button class="whiteButton">Supprimer</button></div>
+                        <div>
+                          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                              <input type="hidden" name="delete_visite" value="<?php  printf("%d",$id_visite) ?>">
+                              <input class='whiteButton' type="submit" name="supprimer" value="Supprimer" class="whiteButton">
+                            </form>
+                          </div>
                         <div><button class="brownButton">Creer rapport</button></div>
                     </div>
                   </form>
@@ -83,101 +179,166 @@
                 <p class="data">Email universitaire</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
+           
+            <?php
+            $query = "SELECT pr.ID_PROFESSEUR , pr.PRENOM , pr.NOM,pr.EMAIL_EDU 
+                      FROM assister AS a ,professeur AS pr
+                      WHERE a.ID_PROFESSEUR = pr.ID_PROFESSEUR AND a.ID_VISITE = '$id_visite'";
+            $result = mysqli_query(CONNECTION,$query);
+            while($row = mysqli_fetch_assoc($result))
+            {
+              printf("<a href='affichageProf.php?ID_PROFESSEUR=%s'>
+              <div class='tableRow'>
+                <p class='data'>%s %s</p>
+                <p class='data'>%s</p>
               </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-              </div>
-            </a>
-            <a href="">
-                <div class="tableRow">
-                  <p class="data">Wadia</p>
-                  <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-                </div>
-              </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Wadia</p>
-                <p class="data">sgdfuhsbg@uiz.ac.ma</p>
-              </div>
-            </a>
+            </a>"
+          ,$row['ID_PROFESSEUR'],$row['PRENOM'],$row['NOM'],$row['EMAIL_EDU']);
+            }
+            ?>
           </div>
         </div>
       </div>
     </div>
-    <script>
-          // Function to populate dropdown with options
-          function populateDropdown(selectId, options) {
-              var selectElement = document.getElementById(selectId);
-              
-              // Clear existing options
-              selectElement.innerHTML = '';
+ </body>
+</html>
+<?php
 
-              // Add new options
-              options.forEach(function(option) {
-                  var optionElement = document.createElement('option');
-                  optionElement.value = option.value;
-                  optionElement.textContent = option.label;
-                  selectElement.appendChild(optionElement);
-              });
-          }
+try {
+    printf("<script>
 
-          function loadData() {
+        // Function to populate dropdown with options
+        function populateDropdown1(selectId, options) {
+            var selectElement = document.getElementById(selectId);
+            
+            // Clear existing options
+            selectElement.innerHTML = '';
+
+            // Add new options
+            options.forEach(function(option) {
+                var optionElement = document.createElement('option');
+                optionElement.value = option[0]; // Value
+                optionElement.textContent = option[1]; // Label
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        // Function to populate dropdown with options
+        function populateDropdown(selectId, options) {
+            var selectElement = document.getElementById(selectId);
+            selectElement.innerHTML = ''; // Clear existing options
+            options.forEach(function(option) {
+                var optionElement = document.createElement('option');
+                optionElement.value = option[0]; // Value
+                optionElement.textContent = option[1]; // Label
+                selectElement.appendChild(optionElement);
+            });
+        }
+    ");
+
+    // Loading data for loadData() function
+    $reslt = appel_visite(CONNECTION, $id_visite);
+    while ($row = mysqli_fetch_assoc($reslt)) {
+        printf("
+        function loadData() {
             // Example data (you can replace this with data loaded from a source like an API)
             var loadedData = {
-                Destination: "Taroudant",
-                Notes: "Officia qui fugiat elit labore cillum. Labore pariatur aute eiusmod do ut eiusmod exercitation. Mollit fugiat duis tempor in culpa ad irure mollit aliqua sit pariatur nulla laboris pariatur. Duis excepteur mollit pariatur consequat adipisicing quis occaecat eiusmod. Non dolore pariatur minim eiusmod do. In quis consectetur magna eu sit laborum do ut nulla ea nisi reprehenderit. Anim fugiat qui adipisicing cupidatat cupidatat ut et laboris culpa qui commodo fugiat."
+                Destination: '%s',
+                Notes: '%s'
             };
-    
+        
             // Set the input field values with the loaded data
-            document.getElementById("Destination").value = loadedData.Destination;
-            document.getElementById("Notes").value = loadedData.Notes;
+            document.getElementById('Destination').value = loadedData.Destination;
+            document.getElementById('Notes').value = loadedData.Notes;
         }
 
         function setInitialDate() {
-        var currentDate = new Date();
-        var formattedDate = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
-        document.getElementById('dateStart').value = formattedDate;
+            var currentDate = '%s';
+            var formattedDate = currentDate; // Format: YYYY-MM-DD
+            document.getElementById('dateStart').value = formattedDate;
         }
+
         function setReturnDate() {
-        var currentDate = new Date();
-        var formattedDate = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
-        document.getElementById('dateEnd').value = formattedDate;
+            var currentDate = '%s';
+            var formattedDate = currentDate; // Format: YYYY-MM-DD
+            document.getElementById('dateEnd').value = formattedDate;
         }
+        ", $row['LIEU'], $row['NOTE'], $row['DATE_DEBUT'], $row['DATE_FIN']);
+    }
 
-          // Function to load data into dropdowns when the page is loaded
-          window.onload = function() {
-              // Data for 'Niveau' dropdown
-              var niveaux = [
-                  { value: 'Genie informaique 1', label: 'Genie informaique 1' },
-                  { value: 'Genie mecanique 2', label: 'Genie mecanique 2' },
-                  { value: 'Genie industriel 1', label: 'Genie industriel 1' }
-              ];
+    // Function to load data into dropdowns when the page is loaded
+    printf("
+        window.onload = function() {
+            var niveaux = [];");
 
-              // Data for 'Encadrant' dropdown
-              var responsables = [
-                  { value: 'wadia el bahri', label: 'Wadia El Bahri' },
-                  { value: 'another responsable', label: 'Another responsable' },
-                  { value: 'yet another responsable', label: 'Yet Another responsable' }
-              ];
+    // Retrieving levels associated with the jury
+    $query = "SELECT v.ID_NIVEAU, n.LBL_NIVEAUX 
+            FROM visite AS v, niveau AS n 
+            WHERE v.ID_NIVEAU = n.ID_NIVEAU
+            AND v.ID_VISITE = '$id_visite'";
+    $result = mysqli_query(CONNECTION, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        printf("
+            niveaux.push(['%d','%s']);
+            ", $row['ID_NIVEAU'], $row['LBL_NIVEAUX']);
+    }
 
-              // Populate 'Niveau' dropdown
-              populateDropdown('Fil', niveaux);
+    // Retrieving other levels not associated with the jury
+    $query = "SELECT n.ID_NIVEAU, n.LBL_NIVEAUX
+            FROM niveau AS n
+            WHERE n.ID_NIVEAU NOT IN (SELECT ID_NIVEAU FROM visite WHERE ID_VISITE = '$id_visite')";
+    $result = mysqli_query(CONNECTION, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        printf("
+            niveaux.push(['%d','%s']);
+            ", $row['ID_NIVEAU'], $row['LBL_NIVEAUX']);
+    }
 
-              // Populate 'Encadrant' dropdown
-              populateDropdown('respo', responsables);
+    printf("var responsables = [];");
 
-              setInitialDate();
-              setReturnDate();
+    // Retrieving responsible associated with the jury
+    $query = "SELECT p.ID_PROFESSEUR, p.NOM, p.PRENOM
+            FROM PROFESSEUR As p, responsable AS r ,visite AS v
+            WHERE p.ID_PROFESSEUR = r.ID_PROFESSEUR
+            AND r.ID_RESPONSABLE = v.ID_RESPONSABLE
+            AND v.ID_VISITE = '$id_visite'";
+    $result = mysqli_query(CONNECTION, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        printf("
+            responsables.push(['%d','%s %s']);
+            ", $row['ID_PROFESSEUR'], $row['PRENOM'], $row['NOM']);
+    }
 
-              loadData();
-          };
-    </script>
-  </body>
-</html>
+    // Retrieving other responsible not associated with the jury
+    $query = "SELECT p.ID_PROFESSEUR, p.NOM, p.PRENOM
+            FROM PROFESSEUR AS p
+            WHERE p.ID_PROFESSEUR NOT IN (
+            SELECT r.ID_PROFESSEUR
+            FROM responsable AS r
+            INNER JOIN visite AS v ON r.ID_RESPONSABLE = v.ID_RESPONSABLE
+            WHERE v.ID_VISITE = '$id_visite'
+    )";
+    $result = mysqli_query(CONNECTION, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        printf("
+            responsables.push(['%d', '%s %s']);
+            ", $row['ID_PROFESSEUR'], $row['PRENOM'], $row['NOM']);
+    }
+
+    printf("
+        // Populate 'Niveau' dropdown
+        populateDropdown1('Fil', niveaux);
+
+        // Populate 'Encadrant' dropdown
+        populateDropdown1('respo', responsables);
+
+        setInitialDate();
+        setReturnDate();
+        loadData();
+    };
+</script>");
+} catch (Exception $e) {
+    echo "Erreur: ", $e->getMessage();
+}
+
+?>

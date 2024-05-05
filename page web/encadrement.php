@@ -101,8 +101,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $data = appel_encadrement(CONNECTION,null);
           while($row = mysqli_fetch_assoc($data))
           {
-            printf("    <a href='affichageEnca.php'>
-                          <div class='tableRow'>");
+            printf("    <a href='affichageEnca.php?ID_ENCADREMENT=%s'>
+                          <div class='tableRow'>",$row['ID_ENCADREMENT']);
             $prof = idProfToProf(CONNECTION,$row['ID_PROFESSEUR']);
             while($profData = mysqli_fetch_assoc($prof))
             {
