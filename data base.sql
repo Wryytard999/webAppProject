@@ -68,8 +68,8 @@ create table JURY
    ID_JURY              bigint not null AUTO_INCREMENT,
    ID_NIVEAU            bigint not null,
    ID_RESPONSABLE       bigint not null,
-   DATE_DEBUT           datetime,
-   DATE_FIN             datetime,
+   DATE_DEBUT           date,
+   DATE_FIN             date,
    NOTE                 text,
    TYPE_DE_JURY         varchar(20),
    primary key (ID_JURY)
@@ -82,7 +82,7 @@ create table NIVEAU
 (
    ID_NIVEAU            bigint not null AUTO_INCREMENT,
    ID_FILLIERE          bigint not null,
-   LBL_NIVEAUX          varchar(10),
+   LBL_NIVEAUX          varchar(20),
    primary key (ID_NIVEAU)
 );
 
@@ -132,8 +132,8 @@ create table VISITE
    ID_NIVEAU            bigint not null,
    ID_RESPONSABLE       bigint not null,
    LIEU                 varchar(50),
-   DATE_DEBUT           datetime,
-   DATE_FIN             datetime,
+   DATE_DEBUT           date,
+   DATE_FIN             date,
    NOTE                 text,
    primary key (ID_VISITE)
 );
