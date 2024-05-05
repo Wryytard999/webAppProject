@@ -46,7 +46,9 @@ if(isset($_GET['ID_FILLIERE'])){
           $result = mysqli_stmt_execute($stmt);
           if($result)
               {
-                $query = "DELETE from responsable WHERE ID_RESPONSABLE = '$old_id_respo' AND LBL_RESPO ='chef de filliere'";
+                $query = "DELETE from responsable 
+                          WHERE ID_RESPONSABLE = '$old_id_respo' 
+                          AND LBL_RESPO ='chef de filliere'";
                 mysqli_query(CONNECTION,$query);
                 printf("<div class='success-message'>
                           <p> La Filliere est modifier par succes </p>
@@ -77,7 +79,7 @@ if(isset($_GET['ID_FILLIERE'])){
         if(isset($_POST['delete_id_fill']))
         {
             $id_filliere = $_POST['delete_id_fill'];
-            $query = "DELETE FROM filliere WHERE ID_FILLIERE = '$id_filliere'";
+            $query = "DELETE FROM filliere WHERE ID_FILLIERE ='$id_filliere'";
             $result = mysqli_query(CONNECTION,$query);
             if($result)
             {
@@ -86,6 +88,7 @@ if(isset($_GET['ID_FILLIERE'])){
                       </div>"
                       );
                       header('Location: Filiere.php');
+                      exit();
             }
         }
       }
@@ -159,11 +162,11 @@ if(isset($_GET['ID_FILLIERE'])){
                         <input type="submit" name="submit" value="Sauvegarder" class="brownButton">
                         <div>
                               <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                              <input type="hidden" name="delete_id_fill" value="<?php  printf("%d",$id_filliere) ?>">
+                              <input type='hidden' name='delete_id_fill' value='<?php  printf('%d',$id_filliere) ?>'> <!-- makhdamach hd suprimer-->
                               <input class='whiteButton' type="submit" name="supprimer" value="Supprimer" class="whiteButton">
                               </form>
                         </div>
-                        <div><button class="brownButton">Creer rapport</button></div>
+                        <div><button class="brownButton">Creer rapport</button></div>""
                     </div>
                   </form>
                 </div>
@@ -178,34 +181,31 @@ if(isset($_GET['ID_FILLIERE'])){
             <p class="data">Niveau</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">recrutement</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">recrutement</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-                <div class="tableRow">
-                  <p class="data">recrutement</p>
-                  <p class="data">Wadia El bahri</p>
-                  <p class="data">Genie Informatique 2</p>
-                </div>
-              </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">recrutement</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
+          <?php
+          $query = "SELECT j.TYPE_DE_JURY , n.LBL_NIVEAUX  , j.ID_JURY, p.NOM , p.PRENOM
+                    FROM jury AS j , niveau AS n , filliere AS f, professeur AS p, responsable AS r
+                    WHERE j.ID_NIVEAU = n.ID_NIVEAU
+                    AND   n.ID_FILLIERE = f.ID_FILLIERE 
+                    AND   j.ID_RESPONSABLE = r.ID_RESPONSABLE
+                    AND   r.ID_PROFESSEUR = p.ID_PROFESSEUR
+                    AND f.ID_FILLIERE = '$id_filliere'
+                    ORDER BY ID_JURY";
+          $result = mysqli_query(CONNECTION,$query);
+          while($row = mysqli_fetch_assoc($result))
+          {
+            printf("
+                    <a href='affichageJury.php?ID_JURY=%s'>
+                      <div class='tableRow'>
+                        <p class='data'>%s</p>
+                        <p class='data'>%s %s</p>
+                        <p class='data'>%s</p>
+                      </div>
+                    </a>
+                  "
+                ,$row['ID_JURY'],$row['TYPE_DE_JURY'],$row['PRENOM'],$row['NOM'],$row['LBL_NIVEAUX']);             
+          }
+          ?>
+
           </div>
         </div>
         <h3 class="miniTitle">Visites:</h3>
@@ -217,38 +217,30 @@ if(isset($_GET['ID_FILLIERE'])){
             <p class="data">Date depart</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Taroudant</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">04/09/2024</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Taroudant</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">04/09/2024</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Taroudant</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 1</p>
-                <p class="data">04/09/2024</p>
-              </div>
-            </a>
-            <a href="">
-                <div class="tableRow">
-                  <p class="data">Taroudant</p>
-                  <p class="data">Wadia El bahri</p>
-                  <p class="data">Genie Informatique 1</p>
-                  <p class="data">04/09/2024</p>
-                </div>
-              </a>
+          <?php
+              
+                    $query = "SELECT v.LIEU ,n.LBL_NIVEAUX, v.DATE_DEBUT, v.ID_VISITE, p.NOM, p.PRENOM
+                              FROM visite AS v , niveau AS n ,responsable AS r,professeur AS p
+                              WHERE v.ID_NIVEAU = n.ID_NIVEAU 
+                              AND v.ID_RESPONSABLE = r.ID_RESPONSABLE
+                              AND r.ID_PROFESSEUR = p.ID_PROFESSEUR
+                              AND n.ID_FILLIERE = '$id_filliere'
+                              ORDER BY ID_VISITE";
+                    $result = mysqli_query(CONNECTION,$query);
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+                        printf("<a href='affichageVis.php?ID_VISITE=%s'>
+                                  <div class='tableRow'>
+                                    <p class='data'>%s</p>
+                                    <p class='data'>%s %s</p>
+                                    <p class='data'>%s</p>
+                                    <p class='data'>%s</p>
+                                  </div>
+                                 </a>
+                                ",$row['ID_VISITE'],$row['LIEU'],$row['PRENOM'],$row['NOM'],$row['LBL_NIVEAUX'],$row['DATE_DEBUT']);
+          }
+        
+                ?>
           </div>
         </div>
         <h3 class="miniTitle">Encadrements:</h3>
@@ -259,34 +251,30 @@ if(isset($_GET['ID_FILLIERE'])){
             <p class="data">Niveau</p>
           </div>
           <div class="tableContainer">
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-                <div class="tableRow">
-                  <p class="data">Younes EL bandki</p>
-                  <p class="data">Wadia El bahri</p>
-                  <p class="data">Genie Informatique 2</p>
-                </div>
-              </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
-            <a href="">
-              <div class="tableRow">
-                <p class="data">Younes EL bandki</p>
-                <p class="data">Wadia El bahri</p>
-                <p class="data">Genie Informatique 2</p>
-              </div>
-            </a>
+          <?php
+                
+                $query = "SELECT e.ID_ENCADREMENT,e.ETUDIANT , n.LBL_NIVEAUX ,p.PRENOM ,p.NOM
+                          FROM encadrement AS e , niveau AS n ,professeur AS p
+                          WHERE e.ID_NIVEAU = n.ID_NIVEAU
+                          AND   e.ID_PROFESSEUR = p.ID_PROFESSEUR
+                          AND n.ID_FILLIERE = '$id_filliere'
+                          ORDER BY ID_ENCADREMENT";
+                $result = mysqli_query(CONNECTION,$query);
+                while($row = mysqli_fetch_assoc($result))
+                {
+                  printf("
+                          <a href='affichageEnca.php?ID_ENCADREMENT=%s'>
+                            <div class='tableRow'>
+                              <p class='data'>%s</p>
+                              <p class='data'>%s %s</p>
+                              <p class='data'>%s</p>
+                            </div>
+                          </a>
+                        "
+                      ,$row['ID_ENCADREMENT'],$row['ETUDIANT'],$row['PRENOM'],$row['NOM'],$row['LBL_NIVEAUX']);             
+                }
+
+            ?>
           </div>
         </div>
       </div>
@@ -337,7 +325,7 @@ printf("
     $query = "SELECT p.ID_PROFESSEUR, p.NOM, p.PRENOM
               FROM PROFESSEUR AS p
               LEFT JOIN responsable AS r ON p.ID_PROFESSEUR = r.ID_PROFESSEUR
-              WHERE r.LBL_RESPO != 'chef de filliere' OR r.LBL_RESPO IS NULL";
+              WHERE r.LBL_RESPO != 'chef de filliere' OR LBL_RESPO IS NULL";
     $result = mysqli_query(CONNECTION,$query);
     while($row = mysqli_fetch_assoc($result))
     { 

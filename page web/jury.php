@@ -18,27 +18,31 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $type = htmlspecialchars($_POST['type']);
           $fil = htmlspecialchars($_POST['Fil']);
           $niv = htmlspecialchars($_POST['Niveau']);
-          $id_part = $_POST['participant'];
+          
           $date_start = htmlspecialchars($_POST['dateStart']);
           $date_end = htmlspecialchars($_POST['dateFin']);
 
           $responsabilite = profToRespo(CONNECTION,$id_respo,'jury');// passer le prof comme un respo d'un jury avant de le mettre comme chef de filliere
-          $id_respo = idProfToIdRespo(CONNECTION,$id_respo);
+          $id_respo = idProfToIdRespo(CONNECTION,$id_respo,'jury');
             
           $requet="INSERT INTO jury (ID_NIVEAU,ID_RESPONSABLE,DATE_DEBUT,DATE_FIN,TYPE_DE_JURY) 
                     values ('$niv','$id_respo','$date_start','$date_end','$type')";
           $result = mysqli_query(CONNECTION, $requet);
               
           $id_jury = id_jury(CONNECTION,$id_respo,$date_start,$type,$niv);
-
-          if(is_array($id_part) && !empty($id_part))
+          if(isset($_POST['participant']))
           {
-              foreach($id_part as $value)
+            $id_part = $_POST['participant'];
+            if(is_array($id_part) && !empty($id_part))
             {
-                $query = "INSERT INTO participer (ID_PROFESSEUR,ID_JURY) value ('$value','$id_jury')";
-                mysqli_query(CONNECTION, $query);
+                foreach($id_part as $value)
+              {
+                  $query = "INSERT INTO participer (ID_PROFESSEUR,ID_JURY) value ('$value','$id_jury')";
+                  mysqli_query(CONNECTION, $query);
+              }
             }
           }
+      
           
 
             if($result)
@@ -163,7 +167,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                   $data = filliere_liste(CONNECTION);
                   while($row = mysqli_fetch_assoc($data))
                   {
-                   
                     printf(
                       "<option value='%d'>%s</option>",
                       $row['ID_FILLIERE'],$row['LBL_FILLIERE']

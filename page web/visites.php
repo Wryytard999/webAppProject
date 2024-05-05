@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           $date_end = htmlspecialchars($_POST['dateFin']);
 
           $responsabilite = profToRespo(CONNECTION,$id_respo,'visite');// passer le prof comme un respo d'un jury avant de le mettre comme chef de filliere
-          $id_respo = idProfToIdRespo(CONNECTION,$id_respo);
+          $id_respo = idProfToIdRespo(CONNECTION,$id_respo,'visite');
             
           $requet="INSERT INTO visite (ID_NIVEAU,ID_RESPONSABLE,LIEU,DATE_DEBUT,DATE_FIN) 
                          values ('$niv','$id_respo','$destination','$date_start','$date_end')";
