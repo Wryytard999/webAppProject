@@ -167,7 +167,7 @@ if(isset($_GET['ID_PROFESSEUR']))
                               <input class='whiteButton' type="submit" name="supprimer" value="Supprimer" class="whiteButton">
                               </form>
                           </div>
-                        <div><button class="brownButton">Creer rapport</button></div>
+                        <div><button class="brownButton" id="creerRapport">Creer rapport</button></div>
                       </div>
                   </form>
                 </div>
@@ -310,4 +310,5 @@ if(isset($_GET['ID_PROFESSEUR']))
     </div>
 
   </body>
+  <script src="../creerRapport.js"></script>
 </html>

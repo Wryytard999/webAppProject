@@ -161,7 +161,7 @@ try {
                                        class="whiteButton">
                             </form>
                         </div>
-                        <div><button class="brownButton">Creer rapport</button></div>
+                        <div><button class="brownButton" id="creerRapport">Creer rapport</button></div>
                     </div>
                 </form>
             </div>
@@ -169,6 +169,7 @@ try {
     </div>
 </div>
 </body>
+<script src="../creerRapport.js"></script>
 </html>
 
 <?php

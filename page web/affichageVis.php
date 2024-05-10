@@ -167,7 +167,7 @@ elseif(isset($_POST['supprimer'])) {
                               <input class='whiteButton' type="submit" name="supprimer" value="Supprimer" class="whiteButton">
                             </form>
                           </div>
-                        <div><button class="brownButton">Creer rapport</button></div>
+                        <div><button class="brownButton" id="creerRapport">Creer rapport</button></div>
                     </div>
                   </form>
                 </div>
@@ -201,6 +201,7 @@ elseif(isset($_POST['supprimer'])) {
       </div>
     </div>
  </body>
+ <script src="../creerRapport.js"></script>
 </html>
 <?php
 
