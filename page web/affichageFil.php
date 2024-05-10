@@ -20,11 +20,10 @@ if(isset($_GET['ID_FILLIERE'])){
           $old_id_respo = $row['ID_RESPONSABLE'];
       }
 }
+
+
     if(isset($_POST['submit']))
     {
-     
- 
-
         if(isset($_POST['Nom']) && isset($_POST['respo']) && isset($_POST['niv']))
         {
           $id_filliere = htmlspecialchars($_POST['ID_FILL']);
@@ -32,8 +31,9 @@ if(isset($_GET['ID_FILLIERE'])){
           $niv = htmlspecialchars($_POST['niv']);
           $Chef_FIl = htmlspecialchars($_POST['respo']);
         
-          $result = profToChef(CONNECTION,$Chef_FIl);
-          if($result) {
+          $resul = profToChef(CONNECTION,$Chef_FIl);
+          if($resul) 
+          {
             $id_respo = idProfToIdRespo(CONNECTION,$Chef_FIl,'chef de filliere');
             $requet = "UPDATE filliere
                       SET LBL_FILLIERE = ?,
@@ -54,45 +54,54 @@ if(isset($_GET['ID_FILLIERE'])){
                           <p> La Filliere est modifier par succes </p>
                       </div>"
               );
-              header('Location: Filiere.php');
+              sleep(5);
+              header('refresh ');
               }
           
-          if(cheker_fill(CONNECTION,$Chef_FIl,$nom))
-          {
-            printf("<div class='error-message'>
-                      <p> La Filliere existe déjà </p>
-                    </div>"
-                    );
-                    header('Location: Filiere.php');
-          }
-        }
+            if(cheker_fill(CONNECTION,$Chef_FIl,$nom))
+            {
+              printf("<div class='error-message'>
+                        <p> La Filliere existe déjà </p>
+                      </div>"
+                      );
+                      sleep(5);
+                      header('Location: Filiere.php');
+            }
+        
         else{
           printf("<div class='error'>
-                      <p> Erreur  </p>
-                    </div>");
+                      <p> %s  </p>
+                    </div>",mysqli_connect_error()
+                  );
+                    sleep(5);
+                    header('refresh 5');
+                    
                     header('Location: Filiere.php');
 
         }
       }
+    }
+    }
       elseif(isset($_POST['supprimer']))
       {
         if(isset($_POST['delete_id_fill']))
         {
             $id_filliere = $_POST['delete_id_fill'];
             $query = "DELETE FROM filliere WHERE ID_FILLIERE ='$id_filliere'";
-            $result = mysqli_query(CONNECTION,$query);
+            mysqli_query(CONNECTION,$query);
             if($result)
             {
-              printf("<div class='success-message'>
+              printf("<div class='supprimer-message'>
                           <p> La Filliere est supprimer par succes </p>
                       </div>"
                       );
+                      sleep(2);
                       header('Location: Filiere.php');
-                      exit();
+                      
             }
         }
       }
-    }
+    
 ?>
 
 
@@ -323,9 +332,13 @@ printf("
     }
 
     $query = "SELECT p.ID_PROFESSEUR, p.NOM, p.PRENOM
-              FROM PROFESSEUR AS p
-              LEFT JOIN responsable AS r ON p.ID_PROFESSEUR = r.ID_PROFESSEUR
-              WHERE r.LBL_RESPO != 'chef de filliere' OR LBL_RESPO IS NULL";
+    FROM PROFESSEUR AS p
+    WHERE p.ID_PROFESSEUR NOT IN (
+    SELECT r.ID_RESPONSABLE
+    FROM responsable AS r , filliere AS f
+    WHERE r.ID_RESPONSABLE = f.ID_filliere
+    AND f.ID_FILLIERE = '$id_filliere' OR r.LBL_RESPO = 'chef de filliere'
+)";
     $result = mysqli_query(CONNECTION,$query);
     while($row = mysqli_fetch_assoc($result))
     { 
