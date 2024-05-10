@@ -175,7 +175,7 @@ if(isset($_POST['submit'])) {
                               <input class='whiteButton' type="submit" name="supprimer" value="Supprimer" class="whiteButton">
                             </form>
                           </div>
-                        <div><button class="brownButton">Creer rapport</button></div>
+                        <div><button class="brownButton" id="creerRapport">Creer rapport</button></div>
                     </div>
                   </form>
                 </div>
@@ -213,6 +213,7 @@ if(isset($_POST['submit'])) {
 
 
     </body>
+    <script src="../creerRapport.js"></script>
 </html>
 <?php
 
